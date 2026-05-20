@@ -1,3 +1,4 @@
+import ChatWidget from '../components/ChatWidget.jsx'
 import './Start.css'
 
 const FEATURED_CARS = [
@@ -73,14 +74,6 @@ function CalendarIcon() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
             <rect x="3" y="5" width="18" height="16" rx="2" />
             <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
-        </svg>
-    )
-}
-
-function ChatIcon() {
-    return (
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2z" />
         </svg>
     )
 }
@@ -251,9 +244,7 @@ function Start() {
                         © 2024 APEX DRIVE. WSZYSTKIE PRAWA ZASTRZEŻONE.
                     </p>
                 </div>
-                <button type="button" className="chat-fab" aria-label="Czat">
-                    <ChatIcon />
-                </button>
+                <ChatWidget />
             </footer>
         </div>
     )
