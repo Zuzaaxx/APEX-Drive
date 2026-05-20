@@ -1,4 +1,6 @@
 :root {
+  --layout-gutter: 24px;
+  --fab-size: 48px;
   --text: #5d6072;
   --text-h: #161526;
   --bg: #f7f5ff;
