@@ -619,13 +619,24 @@
 /* Footer */
 
 .home-footer {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 24px;
-  padding: 32px var(--home-pad) 48px;
+  justify-content: space-between;
+  gap: 16px 20px;
+  padding: 28px var(--home-pad);
   border-top: 1px solid var(--home-border);
   background: #000000;
+}
+
+.home-footer__end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 20px;
+  margin-right: calc(var(--fab-size, 48px) + var(--layout-gutter, 24px));
 }
 
 .home-footer__logo {
@@ -644,8 +655,8 @@
 .home-footer__nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(16px, 3vw, 32px);
+  justify-content: flex-end;
+  gap: 12px 16px;
 }
 
 .home-footer__nav a {
@@ -665,13 +676,14 @@
 .home-footer__copy {
   margin: 0;
   text-align: right;
+  white-space: nowrap;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--home-muted);
 }
 
-/* Chat FAB */
+/* Chat FAB — fixed; tekst stopki ma margines z prawej, nie dodatkowy padding na dole */
 
 .chat-fab {
   position: fixed;
@@ -688,6 +700,7 @@
   background: var(--home-gold);
   color: #0a0a0a;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
@@ -771,12 +784,23 @@
   }
 
   .home-footer {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+  }
+
+  .home-footer__end {
+    flex-direction: column;
+    margin-right: 0;
+  }
+
+  .home-footer__nav {
+    justify-content: center;
   }
 
   .home-footer__copy {
     text-align: center;
+    white-space: normal;
   }
 }
 
