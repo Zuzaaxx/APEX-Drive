@@ -1,7 +1,6 @@
 /* APEX Drive — strona główna */
 
 .home {
-  /* Tokeny zgodne z makietą Figma */
   --home-bg: #050505;
   --home-surface: #111111;
   --home-surface-2: #1a1a1a;
@@ -42,7 +41,7 @@
   cursor: pointer;
 }
 
-/* Nagłówki — białe / złote jak w Figmie (bez globalnego --text-h) */
+/* Nagłówki — białe / złote  */
 
 .home h1,
 .home h2,
@@ -231,8 +230,9 @@
 
 .section__title {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   margin: 0;
   font-size: clamp(1.4rem, 3vw, 1.75rem);
   font-weight: 700;
@@ -241,12 +241,15 @@
   color: var(--home-heading);
 }
 
+.section__title-text {
+  line-height: 1.1;
+}
+
 .section__title-line {
   display: block;
-  width: 28px;
+  width: clamp(72px, 18vw, 100px);
   height: 3px;
   background: var(--home-gold);
-  flex-shrink: 0;
 }
 
 .section__link {
@@ -683,7 +686,7 @@
   color: var(--home-muted);
 }
 
-/* Chat FAB — fixed; tekst stopki ma margines z prawej, nie dodatkowy padding na dole */
+/* Chat FAB */
 
 .chat-fab {
   position: fixed;

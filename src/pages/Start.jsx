@@ -126,8 +126,8 @@ function Start() {
             <section id="samochody" className="section cars-section">
                 <div className="section__head">
                     <h2 className="section__title">
+                        <span className="section__title-text">NAJPOPULARNIEJSZE AUTA</span>
                         <span className="section__title-line" aria-hidden="true" />
-                        NAJPOPULARNIEJSZE AUTA
                     </h2>
                     <a href="#samochody" className="section__link">
                         ZOBACZ WSZYSTKIE →
