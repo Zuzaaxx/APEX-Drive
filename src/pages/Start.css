@@ -140,27 +140,46 @@
 
 .hero {
   position: relative;
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding: 120px var(--home-pad) 80px;
-  background:
-    linear-gradient(90deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.45) 55%, rgba(5, 5, 5, 0.2) 100%),
-    linear-gradient(180deg, rgba(5, 5, 5, 0.3) 0%, rgba(5, 5, 5, 0.85) 100%),
-    url('https://images.unsplash.com/photo-1549893078-7f46d6dc5af1?auto=format&fit=crop&w=1920&q=80')
-      center / cover no-repeat;
+  background: var(--home-bg);
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% center;
 }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 20% 50%, transparent 0%, rgba(5, 5, 5, 0.4) 100%);
+  z-index: 1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.9) 0%,
+      rgba(5, 5, 5, 0.65) 38%,
+      rgba(5, 5, 5, 0.2) 62%,
+      rgba(5, 5, 5, 0.45) 100%
+    ),
+    linear-gradient(180deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.55) 55%, rgba(5, 5, 5, 0.92) 100%);
   pointer-events: none;
 }
 
 .hero__content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 620px;
 }
 

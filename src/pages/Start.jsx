@@ -138,6 +138,14 @@ function Start({ onNavigate }) {
             </header>
 
             <section className="hero" aria-labelledby="hero-heading">
+                <div className="hero__media" aria-hidden="true">
+                    <img
+                        src="/images/hero-track.jpg"
+                        alt=""
+                        fetchPriority="high"
+                        decoding="async"
+                    />
+                </div>
                 <div className="hero__overlay" />
                 <div className="hero__content">
                     <p className="hero__eyebrow">
