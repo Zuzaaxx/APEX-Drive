@@ -51,91 +51,6 @@
   color: var(--home-heading);
 }
 
-/* Header */
-
-.home-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 20px var(--home-pad);
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0) 100%);
-}
-
-.home-logo {
-  display: flex;
-  align-items: baseline;
-  gap: 0.35em;
-  text-decoration: none;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-
-.home-logo__apex {
-  color: var(--home-red);
-}
-
-.home-logo__drive {
-  color: var(--home-text);
-}
-
-.home-nav__list {
-  display: flex;
-  align-items: center;
-  gap: clamp(20px, 3vw, 40px);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.home-nav a {
-  color: var(--home-text);
-  text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.9;
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.home-nav a:hover {
-  opacity: 1;
-  color: var(--home-gold);
-}
-
-.home-login {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--home-text);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: color 0.2s ease;
-}
-
-.home-login:hover {
-  color: var(--home-gold);
-}
-
-.icon-user {
-  width: 22px;
-  height: 22px;
-}
-
 /* Hero */
 
 .hero {
@@ -801,10 +716,6 @@
 }
 
 @media (max-width: 900px) {
-  .home-nav {
-    display: none;
-  }
-
   .voucher-grid {
     grid-template-columns: 1fr;
   }
@@ -820,11 +731,6 @@
 }
 
 @media (max-width: 720px) {
-  .home-header {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-
   .hero {
     min-height: 90vh;
     padding-top: 100px;

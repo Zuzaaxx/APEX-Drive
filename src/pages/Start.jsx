@@ -1,12 +1,5 @@
 import './Start.css'
 
-const NAV_ITEMS = [
-    { label: 'VOUCHERY', href: '#vouchery' },
-    { label: 'SAMOCHODY', href: '#samochody' },
-    { label: 'SZKOLENIA', href: '#szkolenia' },
-    { label: 'BEZPIECZEŃSTWO', href: '#bezpieczenstwo' },
-]
-
 const FEATURED_CARS = [
     {
         badge: 'MOC: 510 KM',
@@ -67,22 +60,6 @@ const UPCOMING_EVENTS = [
     },
 ]
 
-function UserIcon() {
-    return (
-        <svg
-            className="icon-user"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            aria-hidden="true"
-        >
-            <circle cx="12" cy="8" r="4" />
-            <path d="M5 20c0-4 3.5-6 7-6s7 2 7 6" strokeLinecap="round" />
-        </svg>
-    )
-}
-
 function ChevronIcon() {
     return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -108,35 +85,9 @@ function ChatIcon() {
     )
 }
 
-function Start({ onNavigate }) {
+function Start() {
     return (
         <div className="home">
-            <header className="home-header">
-                <a href="/" className="home-logo" aria-label="APEX DRIVE — strona główna">
-                    <span className="home-logo__apex">APEX</span>
-                    <span className="home-logo__drive">DRIVE</span>
-                </a>
-
-                <nav className="home-nav" aria-label="Główne">
-                    <ul className="home-nav__list">
-                        {NAV_ITEMS.map((item) => (
-                            <li key={item.label}>
-                                <a href={item.href}>{item.label}</a>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-
-                <button
-                    type="button"
-                    className="home-login"
-                    onClick={() => onNavigate('/login')}
-                >
-                    LOGIN
-                    <UserIcon />
-                </button>
-            </header>
-
             <section className="hero" aria-labelledby="hero-heading">
                 <div className="hero__media" aria-hidden="true">
                     <img
