@@ -123,16 +123,16 @@ function Start({ onNavigate }) {
                         <span className="section__title-text">NAJPOPULARNIEJSZE AUTA</span>
                         <span className="section__title-line" aria-hidden="true" />
                     </h2>
-                        <a
-                            href="/cars"
-                            className="section__link"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                onNavigate?.('/cars')
-                            }}
-                        >
-                            ZOBACZ WSZYSTKIE →
-                        </a>
+                    <a
+                        href="/cars"
+                        className="section__link"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            onNavigate?.('/cars')
+                        }}
+                    >
+                        ZOBACZ WSZYSTKIE →
+                    </a>
                 </div>
 
                 <div className="cars-grid">
