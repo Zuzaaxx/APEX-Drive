@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Navbar from './components/Navbar.jsx'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
 import './App.css'
@@ -30,11 +31,10 @@ function App() {
   }
 
   return (
-    path === '/login' ? (
-      <Login onNavigate={navigate} />
-    ) : (
-      <Start onNavigate={navigate} />
-    )
+    <>
+      <Navbar onNavigate={navigate} currentPath={path} />
+      {path === '/login' ? <Login onNavigate={navigate} /> : <Start />}
+    </>
   )
 }
 
