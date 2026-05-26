@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
+import Cars from './pages/Cars.jsx'
 import './App.css'
 
 function getCurrentPath() {
@@ -33,7 +34,13 @@ function App() {
   return (
     <>
       <Navbar onNavigate={navigate} currentPath={path} />
-      {path === '/login' ? <Login onNavigate={navigate} /> : <Start />}
+      {path === '/login' ? (
+        <Login onNavigate={navigate} />
+      ) : path === '/cars' ? (
+        <Cars />
+      ) : (
+        <Start onNavigate={navigate} />
+      )}
     </>
   )
 }

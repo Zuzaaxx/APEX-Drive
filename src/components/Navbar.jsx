@@ -3,7 +3,7 @@ import './Navbar.css'
 
 export const DEFAULT_NAV_ITEMS = [
     { label: 'VOUCHERY', href: '#vouchery' },
-    { label: 'SAMOCHODY', href: '#samochody' },
+    { label: 'SAMOCHODY', href: '/cars' },
     { label: 'SZKOLENIA', href: '#szkolenia' },
     { label: 'BEZPIECZEŃSTWO', href: '#bezpieczenstwo' },
 ]
@@ -60,6 +60,15 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
     }
 
     const handleNavClick = (event, href) => {
+        // Internal SPA route (starts with /)
+        if (href.startsWith('/')) {
+            event.preventDefault()
+            closeMenu()
+            onNavigate(href)
+            return
+        }
+
+        // Hash links that scroll on the home page
         if (!href.startsWith('#')) {
             closeMenu()
             return

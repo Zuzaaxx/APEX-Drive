@@ -1,4 +1,5 @@
 import ChatWidget from '../components/ChatWidget.jsx'
+import Footer from '../components/Footer.jsx'
 import './Start.css'
 
 const FEATURED_CARS = [
@@ -78,7 +79,7 @@ function CalendarIcon() {
     )
 }
 
-function Start() {
+function Start({ onNavigate }) {
     return (
         <div className="home">
             <section className="hero" aria-labelledby="hero-heading">
@@ -122,9 +123,16 @@ function Start() {
                         <span className="section__title-text">NAJPOPULARNIEJSZE AUTA</span>
                         <span className="section__title-line" aria-hidden="true" />
                     </h2>
-                    <a href="#samochody" className="section__link">
-                        ZOBACZ WSZYSTKIE →
-                    </a>
+                        <a
+                            href="/cars"
+                            className="section__link"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                onNavigate?.('/cars')
+                            }}
+                        >
+                            ZOBACZ WSZYSTKIE →
+                        </a>
                 </div>
 
                 <div className="cars-grid">
@@ -229,23 +237,8 @@ function Start() {
                 </div>
             </section>
 
-            <footer className="home-footer" id="bezpieczenstwo">
-                <span className="home-footer__logo">
-                    <span className="home-footer__logo-apex">APEX</span> DRIVE
-                </span>
-                <div className="home-footer__end">
-                    <nav className="home-footer__nav" aria-label="Stopka">
-                        <a href="#regulamin">REGULAMIN</a>
-                        <a href="#polityka">POLITYKA PRYWATNOŚCI</a>
-                        <a href="#kontakt">KONTAKT</a>
-                        <a href="#faq">FAQ</a>
-                    </nav>
-                    <p className="home-footer__copy">
-                        © 2024 APEX DRIVE. WSZYSTKIE PRAWA ZASTRZEŻONE.
-                    </p>
-                </div>
-                <ChatWidget />
-            </footer>
+            <Footer />
+            <ChatWidget />
         </div>
     )
 }
