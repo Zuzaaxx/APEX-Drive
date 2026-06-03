@@ -93,6 +93,23 @@
   color: var(--navbar-gold-bright);
 }
 
+.navbar__login--cta {
+  min-height: 40px;
+  padding: 0 22px;
+  border-radius: 2px;
+  background: var(--navbar-red);
+  color: #ffffff;
+  letter-spacing: 0.16em;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.navbar__login--cta:hover {
+  color: #ffffff;
+  background: #d40000;
+}
+
 .navbar__user-icon {
   width: 22px;
   height: 22px;
@@ -259,6 +276,17 @@
 
 .navbar__mobile-login:hover {
   background: rgba(232, 185, 35, 0.12);
+}
+
+.navbar__mobile-login--cta {
+  border-color: var(--navbar-red);
+  background: var(--navbar-red);
+  color: #ffffff;
+}
+
+.navbar__mobile-login--cta:hover {
+  background: #d40000;
+  color: #ffffff;
 }
 
 @media (max-width: 900px) {

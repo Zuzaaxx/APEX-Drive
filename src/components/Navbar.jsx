@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react'
 import './Navbar.css'
 
-export const DEFAULT_NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
     { label: 'VOUCHERY', href: '#vouchery' },
     { label: 'SAMOCHODY', href: '#samochody' },
     { label: 'SZKOLENIA', href: '#szkolenia' },
@@ -139,12 +139,16 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
             <div className="navbar__actions">
                 <button
                     type="button"
-                    className="navbar__login navbar__login--desktop"
+                    className={
+                        currentPath === '/login'
+                            ? 'navbar__login navbar__login--desktop navbar__login--cta'
+                            : 'navbar__login navbar__login--desktop'
+                    }
                     onClick={handleLoginClick}
                     aria-current={currentPath === '/login' ? 'page' : undefined}
                 >
-                    LOGIN
-                    <UserIcon />
+                    {currentPath === '/login' ? 'ZALOGUJ' : 'LOGIN'}
+                    {currentPath !== '/login' && <UserIcon />}
                 </button>
 
                 <button
@@ -190,12 +194,16 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                     {renderNavLinks('navbar__mobile-link')}
                     <button
                         type="button"
-                        className="navbar__mobile-login"
+                        className={
+                            currentPath === '/login'
+                                ? 'navbar__mobile-login navbar__mobile-login--cta'
+                                : 'navbar__mobile-login'
+                        }
                         onClick={handleLoginClick}
                         aria-current={currentPath === '/login' ? 'page' : undefined}
                     >
-                        LOGIN
-                        <UserIcon />
+                        {currentPath === '/login' ? 'ZALOGUJ' : 'LOGIN'}
+                        {currentPath !== '/login' && <UserIcon />}
                     </button>
                 </nav>
             </div>
