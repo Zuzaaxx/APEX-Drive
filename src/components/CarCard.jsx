@@ -1,8 +1,23 @@
 import '../pages/Start.css'
 
-function CarCard({ badge, category, name, power, acceleration, image, price, onReserve, highlightedReserve = false }) {
+function CarCard({ badge, category, name, power, acceleration, image, price, onClick, highlightedReserve = false }) {
+    const handleKeyDown = (event) => {
+        if (!onClick) return
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            onClick()
+        }
+    }
+
     return (
-        <article className="car-card">
+        <article
+            className={`car-card${onClick ? ' car-card--clickable' : ''}`}
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+            role={onClick ? 'link' : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            aria-label={onClick ? `Zobacz szczegóły: ${name}` : undefined}
+        >
             <div className="car-card__media">
                 <img src={image} alt={name} loading="lazy" />
                 {badge && <span className="car-card__badge">{badge}</span>}
@@ -22,13 +37,12 @@ function CarCard({ badge, category, name, power, acceleration, image, price, onR
                 </div>
                 <div className="car-card__footer">
                     {price && <div className="car-card__price">{price}</div>}
-                    <button
-                        type="button"
+                    <span
                         className={`car-card__reserve ${highlightedReserve ? 'car-card__reserve--hot' : ''}`}
-                        onClick={onReserve}
+                        aria-hidden="true"
                     >
                         RESERVE
-                    </button>
+                    </span>
                 </div>
             </div>
         </article>

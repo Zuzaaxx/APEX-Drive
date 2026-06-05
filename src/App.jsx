@@ -3,10 +3,18 @@ import Navbar from './components/Navbar.jsx'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
 import Cars from './pages/Cars.jsx'
+import CarDetail from './pages/CarDetail.jsx'
 import './App.css'
 
 function getCurrentPath() {
   return window.location.pathname || '/'
+}
+
+function getCarSlug(path) {
+  if (!path.startsWith('/cars/')) {
+    return null
+  }
+  return path.slice('/cars/'.length) || null
 }
 
 function App() {
@@ -36,8 +44,10 @@ function App() {
       <Navbar onNavigate={navigate} currentPath={path} />
       {path === '/login' ? (
         <Login onNavigate={navigate} />
+      ) : getCarSlug(path) ? (
+        <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
       ) : path === '/cars' ? (
-        <Cars />
+        <Cars onNavigate={navigate} />
       ) : (
         <Start onNavigate={navigate} />
       )}

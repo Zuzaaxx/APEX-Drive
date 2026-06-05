@@ -1,59 +1,9 @@
 import './Start.css'
 import { useMemo, useState } from 'react'
+import { CARS } from '../data/cars.js'
 import CarCard from '../components/CarCard.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
-
-const CARS = [
-    {
-        badge: 'AVAILABLE',
-        brand: 'PORSCHE',
-        category: 'THE TRACK KING',
-        name: 'PORSCHE 911 GT3 RS',
-        power: 525,
-        powerText: '525 KM',
-        acceleration: '3.2 S',
-        image: '/images/cars/porsche-911.jpg',
-        price: '1 200 PLN',
-        type: 'GT3',
-    },
-    {
-        badge: 'LIMITED',
-        brand: 'FERRARI',
-        category: 'HYBRID EXCELLENCE',
-        name: 'FERRARI SF90 STRADALE',
-        power: 1000,
-        powerText: '1000 KM',
-        acceleration: '2.5 S',
-        image: '/images/cars/ferrari-f8.jpg',
-        price: '2 500 PLN',
-        type: 'TRACK DAY',
-    },
-    {
-        badge: null,
-        brand: 'LAMBORGHINI',
-        category: 'RAW AERODYNAMICS',
-        name: 'LAMBORGHINI STO',
-        power: 640,
-        powerText: '640 KM',
-        acceleration: '3.0 S',
-        image: '/images/cars/mclaren-720s.jpg',
-        price: '1 800 PLN',
-        type: 'GT3',
-    },
-    {
-        badge: null,
-        brand: 'MCLAREN',
-        category: 'SURGICAL PRECISION',
-        name: 'MCLAREN 720S',
-        power: 720,
-        powerText: '720 KM',
-        acceleration: '2.9 S',
-        image: '/images/cars/mclaren-720s.jpg',
-        price: '1 650 PLN',
-        type: 'GT3',
-    },
-]
 
 const EVENTS = [
     {
@@ -76,7 +26,7 @@ const EVENTS = [
     },
 ]
 
-function Cars() {
+function Cars({ onNavigate }) {
     const [search, setSearch] = useState('')
     const [brand, setBrand] = useState('WSZYSTKIE')
     const [minPower, setMinPower] = useState(0)
@@ -173,7 +123,7 @@ function Cars() {
                                 image={car.image}
                                 price={car.price}
                                 highlightedReserve={car.badge === 'LIMITED'}
-                                onReserve={() => alert(`Rezerwacja: ${car.name}`)}
+                                onClick={() => onNavigate?.(`/cars/${car.slug}`)}
                             />
                         ))}
                     </div>
