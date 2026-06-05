@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react'
 import './Navbar.css'
 
 export const DEFAULT_NAV_ITEMS = [
-    { label: 'VOUCHERY', href: '#vouchery' },
+    { label: 'VOUCHERY', href: '/vouchers' },
     { label: 'SAMOCHODY', href: '/cars' },
     { label: 'SZKOLENIA', href: '#szkolenia' },
     { label: 'BEZPIECZEŃSTWO', href: '#bezpieczenstwo' },
@@ -113,13 +113,16 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
         }
     }, [menuOpen])
 
+    const isNavActive = (href) => href.startsWith('/') && currentPath === href
+
     const renderNavLinks = (linkClassName) => (
         <ul className="navbar__list">
             {navItems.map((item) => (
                 <li key={item.label}>
                     <a
                         href={item.href}
-                        className={linkClassName}
+                        className={`${linkClassName}${isNavActive(item.href) ? ' navbar__link--active' : ''}`}
+                        aria-current={isNavActive(item.href) ? 'page' : undefined}
                         onClick={(event) => handleNavClick(event, item.href)}
                     >
                         {item.label}

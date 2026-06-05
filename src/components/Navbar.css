@@ -72,6 +72,26 @@
   color: var(--navbar-gold-bright);
 }
 
+.navbar__nav a.navbar__link--active,
+.navbar__mobile-link.navbar__link--active {
+  opacity: 1;
+  color: var(--navbar-gold-bright);
+}
+
+.navbar__nav a.navbar__link--active {
+  position: relative;
+}
+
+.navbar__nav a.navbar__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--navbar-gold);
+}
+
 .navbar__login {
   display: inline-flex;
   align-items: center;

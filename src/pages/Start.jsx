@@ -168,7 +168,11 @@ function Start({ onNavigate }) {
                                 Podaruj niezapomniane wrażenia — voucher na jazdę supersamochodem
                                 to prezent, który zostaje na zawsze. Wybierz model, tor i datę.
                             </p>
-                            <button type="button" className="btn btn--gold">
+                            <button
+                                type="button"
+                                className="btn btn--gold"
+                                onClick={() => onNavigate?.('/vouchers')}
+                            >
                                 SKONFIGURUJ VOUCHER
                             </button>
                         </div>
