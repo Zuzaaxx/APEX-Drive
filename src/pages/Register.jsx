@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './Register.css'
@@ -240,22 +241,7 @@ function Register({ onNavigate }) {
                 </section>
             </main>
 
-            <footer className="register-footer">
-                <div className="register-footer__brand">
-                    <span className="register-footer__logo">
-                        <span className="register-footer__logo-apex">APEX</span> DRIVE
-                    </span>
-                    <p className="register-footer__copy">
-                        © 2024 APEX DRIVE. KINETIC PRECISION ENGINEERING.
-                    </p>
-                </div>
-                <nav className="register-footer__nav" aria-label="Stopka rejestracji">
-                    <a href="#regulamin">REGULAMIN</a>
-                    <a href="#polityka">POLITYKA PRYWATNOŚCI</a>
-                    <a href="#kontakt">KONTAKT</a>
-                    <a href="#faq">FAQ</a>
-                </nav>
-            </footer>
+            <Footer />
         </div>
     )
 }
