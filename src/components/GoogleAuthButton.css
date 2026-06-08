@@ -1,0 +1,212 @@
+.google-auth {
+  display: grid;
+  gap: 10px;
+}
+
+.google-auth__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.google-auth__button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.google-auth__button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.google-auth__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.google-auth__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.google-auth__error {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #ff8a8a;
+  text-align: center;
+}
+
+.google-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.google-picker__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.72);
+  cursor: pointer;
+}
+
+.google-picker__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 400px);
+  padding: 24px 0 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #202124;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
+.google-picker__header {
+  padding: 0 24px 16px;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.google-picker__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #5f6368;
+}
+
+.google-picker__brand svg {
+  width: 18px;
+  height: 18px;
+}
+
+.google-picker__title {
+  margin: 16px 0 4px;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #202124;
+}
+
+.google-picker__subtitle {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #5f6368;
+}
+
+.google-picker__list {
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+}
+
+.google-picker__account {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.google-picker__account:hover:not(:disabled) {
+  background: #f8f9fa;
+}
+
+.google-picker__account:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.google-picker__avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.google-picker__details {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.google-picker__name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #202124;
+}
+
+.google-picker__email {
+  font-size: 0.82rem;
+  color: #5f6368;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.google-picker__loading {
+  margin: 0;
+  padding: 12px 24px 8px;
+  font-size: 0.82rem;
+  color: #5f6368;
+  text-align: center;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
+}
+
+.auth-divider__line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider__label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}

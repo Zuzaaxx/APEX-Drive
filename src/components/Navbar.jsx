@@ -1,7 +1,8 @@
 import { useEffect, useId, useState } from 'react'
+import { useAuth } from '../context/AuthContext.jsx'
 import './Navbar.css'
 
-export const DEFAULT_NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
     { label: 'VOUCHERY', href: '#vouchery' },
     { label: 'SAMOCHODY', href: '#samochody' },
     { label: 'SZKOLENIA', href: '#szkolenia' },
@@ -48,6 +49,7 @@ function MenuIcon({ open }) {
 }
 
 function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' }) {
+    const { user, isAuthenticated, logout } = useAuth()
     const [menuOpen, setMenuOpen] = useState(false)
     const mobileMenuId = useId()
 
@@ -83,6 +85,14 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
         closeMenu()
         onNavigate('/login')
     }
+
+    const handleLogout = () => {
+        closeMenu()
+        logout()
+        onNavigate('/')
+    }
+
+    const isAuthPage = currentPath === '/login' || currentPath === '/register'
 
     useEffect(() => {
         if (!menuOpen) {
@@ -137,15 +147,43 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
             </nav>
 
             <div className="navbar__actions">
-                <button
-                    type="button"
-                    className="navbar__login navbar__login--desktop"
-                    onClick={handleLoginClick}
-                    aria-current={currentPath === '/login' ? 'page' : undefined}
-                >
-                    LOGIN
-                    <UserIcon />
-                </button>
+                {isAuthenticated ? (
+                    <div className="navbar__user navbar__user--desktop">
+                        {user.picture ? (
+                            <img
+                                className="navbar__avatar"
+                                src={user.picture}
+                                alt=""
+                                width={32}
+                                height={32}
+                            />
+                        ) : (
+                            <UserIcon />
+                        )}
+                        <span className="navbar__user-name">{user.name}</span>
+                        <button
+                            type="button"
+                            className="navbar__logout"
+                            onClick={handleLogout}
+                        >
+                            WYLOGUJ
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        className={
+                            isAuthPage
+                                ? 'navbar__login navbar__login--desktop navbar__login--cta'
+                                : 'navbar__login navbar__login--desktop'
+                        }
+                        onClick={handleLoginClick}
+                        aria-current={currentPath === '/login' ? 'page' : undefined}
+                    >
+                        {isAuthPage ? 'ZALOGUJ' : 'LOGIN'}
+                        {!isAuthPage && <UserIcon />}
+                    </button>
+                )}
 
                 <button
                     type="button"
@@ -188,15 +226,43 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                     </div>
 
                     {renderNavLinks('navbar__mobile-link')}
-                    <button
-                        type="button"
-                        className="navbar__mobile-login"
-                        onClick={handleLoginClick}
-                        aria-current={currentPath === '/login' ? 'page' : undefined}
-                    >
-                        LOGIN
-                        <UserIcon />
-                    </button>
+                    {isAuthenticated ? (
+                        <div className="navbar__user navbar__user--mobile">
+                            {user.picture ? (
+                                <img
+                                    className="navbar__avatar"
+                                    src={user.picture}
+                                    alt=""
+                                    width={36}
+                                    height={36}
+                                />
+                            ) : (
+                                <UserIcon />
+                            )}
+                            <span className="navbar__user-name">{user.name}</span>
+                            <button
+                                type="button"
+                                className="navbar__mobile-login navbar__mobile-login--cta"
+                                onClick={handleLogout}
+                            >
+                                WYLOGUJ
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            type="button"
+                            className={
+                                isAuthPage
+                                    ? 'navbar__mobile-login navbar__mobile-login--cta'
+                                    : 'navbar__mobile-login'
+                            }
+                            onClick={handleLoginClick}
+                            aria-current={currentPath === '/login' ? 'page' : undefined}
+                        >
+                            {isAuthPage ? 'ZALOGUJ' : 'LOGIN'}
+                            {!isAuthPage && <UserIcon />}
+                        </button>
+                    )}
                 </nav>
             </div>
         </header>

@@ -1,5 +1,7 @@
 :root {
   --layout-gutter: 24px;
+  --page-pad: clamp(20px, 4vw, 48px);
+  --page-pad-right: calc(var(--page-pad) + (100vw - 100%));
   --fab-size: 48px;
   --text: #5d6072;
   --text-h: #161526;
