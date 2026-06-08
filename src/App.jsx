@@ -8,6 +8,8 @@ import Vouchers from './pages/Vouchers.jsx'
 import Register from './pages/Register.jsx'
 import Checkout from './pages/Checkout.jsx'
 import Training from './pages/Training.jsx'
+import TrainingDetail from './pages/TrainingDetail.jsx'
+import Safety from './pages/Safety.jsx'
 import './App.css'
 
 function getCurrentPath() {
@@ -19,6 +21,13 @@ function getCarSlug(path) {
     return null
   }
   return path.slice('/cars/'.length) || null
+}
+
+function getTrainingSlug(path) {
+  if (!path.startsWith('/szkolenia/')) {
+    return null
+  }
+  return path.slice('/szkolenia/'.length) || null
 }
 
 function App() {
@@ -56,8 +65,12 @@ function App() {
         <Cars onNavigate={navigate} />
       ) : path === '/vouchers' ? (
         <Vouchers onNavigate={navigate} />
+      ) : getTrainingSlug(path) ? (
+        <TrainingDetail slug={getTrainingSlug(path)} onNavigate={navigate} />
       ) : path === '/szkolenia' ? (
         <Training onNavigate={navigate} />
+      ) : path === '/bezpieczenstwo' ? (
+        <Safety />
       ) : path === '/checkout' ? (
         <Checkout onNavigate={navigate} />
       ) : (

@@ -1,71 +1,12 @@
 import { useEffect, useRef } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
-import { buildTrainingCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
+import {
+    getTrainingInstructorById,
+    TRAINING_INSTRUCTORS,
+    TRAINING_PROGRAMS,
+} from '../data/trainingPrograms.js'
 import './Training.css'
-
-const PROGRAMS = [
-    {
-        id: 'podstawy-torowe',
-        level: 'POZIOM: WPROWADZENIE',
-        title: 'PODSTAWY NA TORZE',
-        price: 1850,
-        duration: '8 GODZIN',
-        instructor: 'INSTRUKTOR PRO',
-        image: '/images/cars/porsche-911.jpg',
-    },
-    {
-        id: 'linia-perfekcyjna',
-        level: 'POZIOM: ŚREDNIOZAAWANSOWANY',
-        title: 'LINIA PERFEKCYJNA',
-        price: 2650,
-        duration: '12 GODZIN',
-        instructor: 'INSTRUKTOR PRO',
-        image: '/images/login-cockpit.jpg',
-    },
-    {
-        id: 'nocna-sesja',
-        level: 'POZIOM: ZAAWANSOWANY',
-        title: 'NOCNA SESJA TOROWA',
-        price: 2200,
-        duration: '6 GODZIN',
-        instructor: 'INSTRUKTOR ELITE',
-        image: '/images/hero-track.jpg',
-    },
-    {
-        id: 'telemetria-pro',
-        level: 'POZIOM: MISTRZOWSKI',
-        title: 'TELEMETRIA PRO',
-        price: 2950,
-        duration: '10 GODZIN',
-        instructor: 'INŻYNIER DANYCH',
-        image: '/images/cars/mclaren-720s.jpg',
-    },
-]
-
-const INSTRUCTORS = [
-    {
-        name: 'MARCIN WÓJTOWICZ',
-        role: 'FIA GRADE A',
-        stats: ['REKORD OKRĄŻENIA: 1:34.22', 'TOR POZNAŃ'],
-        image: '/images/drivers/driver1.png',
-        accent: 'red',
-    },
-    {
-        name: 'ANNA KOWALSKA',
-        role: 'BYŁA KIEROWCA GT3',
-        stats: ['24 WYŚCIGI GT', 'INSTRUKTORKA ELITE'],
-        image: '/images/drivers/driver2.png',
-        accent: 'gold',
-    },
-    {
-        name: 'TOMASZ NOWAK',
-        role: 'INŻYNIER TELEMETRII',
-        stats: ['ANALIZA DANYCH MOTEC', '500+ SESJI NA TORZE'],
-        image: '/images/drivers/driver3.png',
-        accent: 'red',
-    },
-]
 
 const EQUIPMENT = [
     {
@@ -134,7 +75,7 @@ function ProgramCard({ program, onSelect }) {
                     </span>
                     <span>
                         <UserIcon />
-                        {program.instructor}
+                        {getTrainingInstructorById(program.instructorId)?.title ?? 'INSTRUKTOR'}
                     </span>
                 </div>
                 <button
@@ -185,7 +126,7 @@ function Training({ onNavigate }) {
 
     const handleSelectProgram = (program) => {
         if (!onNavigate) return
-        goToCheckout(buildTrainingCheckoutOrder(program), onNavigate)
+        onNavigate(`/szkolenia/${program.id}`)
     }
 
     return (
@@ -239,7 +180,7 @@ function Training({ onNavigate }) {
                     </div>
 
                     <div className="training-programs__grid">
-                        {PROGRAMS.map((program) => (
+                        {TRAINING_PROGRAMS.map((program) => (
                             <ProgramCard
                                 key={program.id}
                                 program={program}
@@ -254,7 +195,7 @@ function Training({ onNavigate }) {
                         ELITARNY ZESPÓŁ
                     </h2>
                     <div className="training-cadre__grid">
-                        {INSTRUCTORS.map((person) => (
+                        {TRAINING_INSTRUCTORS.map((person) => (
                             <article
                                 key={person.name}
                                 className={`training-instructor training-instructor--${person.accent}`}
@@ -264,7 +205,7 @@ function Training({ onNavigate }) {
                                 </div>
                                 <h3 className="training-instructor__name">{person.name}</h3>
                                 <p className="training-instructor__role">{person.role}</p>
-                                {person.stats.map((stat) => (
+                                {person.cadreStats.map((stat) => (
                                     <p key={stat} className="training-instructor__stat">
                                         {stat}
                                     </p>

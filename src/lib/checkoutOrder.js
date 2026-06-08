@@ -151,7 +151,12 @@ export function buildVoucherCheckoutOrder({
     }
 }
 
-export function buildTrainingCheckoutOrder(program) {
+export function buildTrainingCheckoutOrder({ program, instructor, sessionDate }) {
+    const instructorName = instructor?.name ?? program.instructor
+    const lineItems = program.costBreakdown?.length
+        ? program.costBreakdown.map((line) => ({ label: line.label, amount: line.amount }))
+        : [{ label: `PAKIET — ${program.title}`, amount: program.price }]
+
     return {
         type: 'training',
         eyebrow: 'SZKOLENIE',
@@ -159,12 +164,12 @@ export function buildTrainingCheckoutOrder(program) {
         image: program.image,
         badge: program.level,
         meta: [
-            { label: 'CZAS TRWANIA', value: program.duration },
-            { label: 'INSTRUKTOR', value: program.instructor },
+            { label: 'DATA SESJI', value: sessionDate ?? program.duration },
+            { label: 'INSTRUKTOR', value: instructorName },
         ],
-        lineItems: [{ label: `PAKIET — ${program.title}`, amount: program.price }],
+        lineItems,
         total: program.price,
-        sourcePath: '/szkolenia',
+        sourcePath: program.id ? `/szkolenia/${program.id}` : '/szkolenia',
         infoTitle: DEFAULT_INFO.title,
         infoDesc:
             'Cena obejmuje czas na torze, pracę z instruktorem, analizę telemetrii oraz ubezpieczenie uczestnika.',
