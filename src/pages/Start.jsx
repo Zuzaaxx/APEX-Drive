@@ -1,5 +1,6 @@
 import ChatWidget from '../components/ChatWidget.jsx'
 import Footer from '../components/Footer.jsx'
+import { buildEventCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './Start.css'
 
 const FEATURED_CARS = [
@@ -39,6 +40,8 @@ const UPCOMING_EVENTS = [
         status: 'OSTATNIE MIEJSCA',
         urgent: true,
         featured: true,
+        price: 890,
+        image: '/images/hero-track.jpg',
     },
     {
         day: '31',
@@ -49,6 +52,8 @@ const UPCOMING_EVENTS = [
         status: 'WOLNE MIEJSCA',
         urgent: false,
         featured: false,
+        price: 1250,
+        image: '/images/cars/mclaren-720s.jpg',
     },
     {
         day: '07',
@@ -59,6 +64,8 @@ const UPCOMING_EVENTS = [
         status: 'OSTATNIE MIEJSCA',
         urgent: true,
         featured: false,
+        price: 1490,
+        image: '/images/cars/porsche-911.jpg',
     },
 ]
 
@@ -80,6 +87,11 @@ function CalendarIcon() {
 }
 
 function Start({ onNavigate }) {
+    const handleEventReserve = (event) => {
+        if (!onNavigate) return
+        goToCheckout(buildEventCheckoutOrder(event), onNavigate)
+    }
+
     return (
         <div className="home">
             <section className="hero" aria-labelledby="hero-heading">
@@ -232,6 +244,7 @@ function Start({ onNavigate }) {
                                             : 'event-row__action'
                                     }
                                     aria-label={`Rezerwuj: ${event.title}`}
+                                    onClick={() => handleEventReserve(event)}
                                 >
                                     <ChevronIcon />
                                 </button>

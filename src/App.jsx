@@ -6,6 +6,7 @@ import Cars from './pages/Cars.jsx'
 import CarDetail from './pages/CarDetail.jsx'
 import Vouchers from './pages/Vouchers.jsx'
 import Register from './pages/Register.jsx'
+import Checkout from './pages/Checkout.jsx'
 import './App.css'
 
 function getCurrentPath() {
@@ -53,7 +54,9 @@ function App() {
       ) : path === '/cars' ? (
         <Cars onNavigate={navigate} />
       ) : path === '/vouchers' ? (
-        <Vouchers />
+        <Vouchers onNavigate={navigate} />
+      ) : path === '/checkout' ? (
+        <Checkout onNavigate={navigate} />
       ) : (
         <Start onNavigate={navigate} />
       )}
