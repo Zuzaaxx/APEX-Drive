@@ -14,8 +14,9 @@
   --login-text: rgba(255, 255, 255, 0.88);
   --login-muted: #8a8a94;
   --login-font: 'Rajdhani', 'Segoe UI', system-ui, sans-serif;
-  --login-max: 1180px;
-  --login-pad: clamp(20px, 4vw, 48px);
+  --login-pad: var(--page-pad);
+  --login-pad-right: var(--page-pad-right);
+  --login-form-width: 480px;
 
   min-height: 100vh;
   display: flex;
@@ -55,46 +56,35 @@
   font-weight: 700;
 }
 
-/* Main — gradient tła */
+/* Main — zdjęcie od lewej krawędzi do formularza */
 
 .login-main {
+  position: relative;
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 0;
-  padding: 96px var(--login-pad) 40px;
+  width: 100%;
+  min-height: 480px;
+  padding: 96px 0 40px;
   background:
     radial-gradient(ellipse 80% 60% at 20% 40%, rgba(120, 0, 0, 0.45) 0%, transparent 55%),
     radial-gradient(ellipse 70% 50% at 85% 30%, rgba(90, 0, 0, 0.25) 0%, transparent 50%),
     linear-gradient(135deg, #120606 0%, #050505 42%, #080808 100%);
 }
 
-.login-main__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
-  align-items: start;
-  gap: clamp(48px, 7vw, 88px);
-  width: 100%;
-  max-width: var(--login-max);
-  margin: 0 auto;
-}
-
-/* Lewa kolumna — wizual */
+/* Lewa kolumna — od lewej krawędzi do formularza */
 
 .login-visual {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-  width: 100%;
-  max-width: 440px;
+  justify-content: flex-end;
+  min-height: inherit;
+  margin-right: calc(var(--login-form-width) + var(--login-pad-right));
+  overflow: hidden;
 }
 
 .login-visual__media {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background: #0a0a0a;
 }
@@ -110,8 +100,9 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(80, 0, 0, 0.55) 0%, rgba(30, 0, 0, 0.75) 100%),
-    linear-gradient(90deg, rgba(190, 0, 0, 0.2) 0%, transparent 40%);
+    linear-gradient(180deg, rgba(80, 0, 0, 0.45) 0%, rgba(20, 0, 0, 0.82) 100%),
+    linear-gradient(90deg, rgba(190, 0, 0, 0.25) 0%, transparent 45%),
+    linear-gradient(90deg, transparent 70%, rgba(5, 5, 5, 0.85) 100%);
   pointer-events: none;
 }
 
@@ -126,14 +117,11 @@
 }
 
 .login-visual__copy {
+  position: relative;
+  z-index: 2;
   width: 100%;
-}
-
-/* Prawa kolumna — wyrównana do góry zdjęcia */
-
-.login-terminal {
-  align-self: start;
-  width: 100%;
+  max-width: 520px;
+  padding: 40px var(--login-pad) 48px;
 }
 
 .login-visual__title {
@@ -164,7 +152,16 @@
   letter-spacing: 0.02em;
 }
 
-/* Prawa kolumna — formularz */
+/* Prawa kolumna — ta sama linia co przycisk ZALOGUJ w navbarze */
+
+.login-terminal {
+  position: absolute;
+  top: 96px;
+  right: var(--login-pad-right);
+  width: var(--login-form-width);
+  max-width: calc(100% - var(--login-pad) - var(--login-pad-right));
+  padding: 0;
+}
 
 .login-terminal__card {
   padding: 32px 28px 28px;
@@ -364,13 +361,20 @@
   color: var(--login-muted);
 }
 
-.login-terminal__register a {
+.login-terminal__register-link {
+  padding: 0;
+  border: none;
+  background: none;
   color: var(--login-heading);
+  font: inherit;
   font-weight: 700;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
   transition: color 0.2s ease;
 }
 
-.login-terminal__register a:hover {
+.login-terminal__register-link:hover {
   color: var(--login-gold-bright);
 }
 
@@ -382,7 +386,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px 32px;
-  padding: 28px var(--login-pad) 32px;
+  padding: 28px var(--login-pad-right) 32px var(--login-pad);
   background: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -436,28 +440,47 @@
 
 @media (max-width: 960px) {
   .login-main {
-    align-items: flex-start;
-    padding-top: 88px;
-  }
-
-  .login-main__inner {
-    grid-template-columns: 1fr;
-    gap: 36px;
-    max-width: 440px;
+    min-height: 0;
+    padding-bottom: 32px;
   }
 
   .login-visual {
+    margin-right: 0;
+    min-height: 280px;
+  }
+
+  .login-visual__copy {
     max-width: none;
   }
 
-  .login-visual__media {
-    aspect-ratio: 16 / 10;
+  .login-terminal {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin:
+      0
+      var(--layout-gutter, 24px)
+      0
+      var(--layout-gutter, 24px);
+  }
+
+  .login-footer {
+    padding-right: var(--layout-gutter, 24px);
+    padding-left: var(--layout-gutter, 24px);
   }
 }
 
 @media (max-width: 640px) {
   .login-main {
-    padding-top: 88px;
+    padding-bottom: 32px;
+  }
+
+  .login-visual {
+    min-height: 220px;
+  }
+
+  .login-visual__copy {
+    padding-top: 28px;
     padding-bottom: 32px;
   }
 

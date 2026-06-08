@@ -42,32 +42,31 @@ function Login({ onNavigate }) {
     return (
         <div className="login-page">
             <main className="login-main">
-                <div className="login-main__inner">
-                    <section className="login-visual" aria-labelledby="login-visual-heading">
-                        <div className="login-visual__media">
-                            <img
-                                src="/images/login-cockpit.jpg"
-                                alt=""
-                                decoding="async"
-                            />
-                            <div className="login-visual__overlay" aria-hidden="true" />
-                            <span className="login-visual__accent" aria-hidden="true" />
-                        </div>
-                        <div className="login-visual__copy">
-                            <h2 id="login-visual-heading" className="login-visual__title">
-                                <span className="login-visual__title-line">LIMITLESS</span>
-                                <span className="login-visual__title-line login-visual__title-line--red">
-                                    PRECISION
-                                </span>
-                            </h2>
-                            <p className="login-visual__desc">
-                                Zaloguj się do swojego terminala telemetrycznego i przejmij kontrolę
-                                nad osiągami.
-                            </p>
-                        </div>
-                    </section>
+                <section className="login-visual" aria-labelledby="login-visual-heading">
+                    <div className="login-visual__media">
+                        <img
+                            src="/images/login-cockpit.jpg"
+                            alt=""
+                            decoding="async"
+                        />
+                        <div className="login-visual__overlay" aria-hidden="true" />
+                        <span className="login-visual__accent" aria-hidden="true" />
+                    </div>
+                    <div className="login-visual__copy">
+                        <h2 id="login-visual-heading" className="login-visual__title">
+                            <span className="login-visual__title-line">LIMITLESS</span>
+                            <span className="login-visual__title-line login-visual__title-line--red">
+                                PRECISION
+                            </span>
+                        </h2>
+                        <p className="login-visual__desc">
+                            Zaloguj się do swojego terminala telemetrycznego i przejmij kontrolę
+                            nad osiągami.
+                        </p>
+                    </div>
+                </section>
 
-                    <section className="login-terminal" aria-labelledby="login-terminal-heading">
+                <section className="login-terminal" aria-labelledby="login-terminal-heading">
                         <div className="login-terminal__card">
                             <header className="login-terminal__header">
                                 <span className="login-terminal__icon" aria-hidden="true">
@@ -86,7 +85,7 @@ function Login({ onNavigate }) {
                             <form className="login-form" onSubmit={handleSubmit} noValidate>
                                 <div className="login-form__field">
                                     <label className="login-form__label" htmlFor="driver-email">
-                                        DRIVER EMAIL
+                                        EMAIL
                                     </label>
                                     <input
                                         id="driver-email"
@@ -103,7 +102,7 @@ function Login({ onNavigate }) {
                                 <div className="login-form__field">
                                     <div className="login-form__label-row">
                                         <label className="login-form__label" htmlFor="security-key">
-                                            SECURITY KEY
+                                            HASŁO
                                         </label>
                                         <a className="login-form__forgot" href="#zapomniane-haslo">
                                             ZAPOMNIAŁEM HASŁA
@@ -138,11 +137,16 @@ function Login({ onNavigate }) {
 
                             <p className="login-terminal__register">
                                 <span className="login-terminal__register-muted">BRAK PROFILU?</span>{' '}
-                                <a href="#rejestracja">ZAREJESTRUJ SIĘ</a>
+                                <button
+                                    type="button"
+                                    className="login-terminal__register-link"
+                                    onClick={() => onNavigate('/register')}
+                                >
+                                    ZAREJESTRUJ SIĘ
+                                </button>
                             </p>
                         </div>
-                    </section>
-                </div>
+                </section>
             </main>
 
             <footer className="login-footer">

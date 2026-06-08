@@ -1,5 +1,6 @@
 .navbar {
-  --navbar-pad: clamp(20px, 4vw, 48px);
+  --navbar-pad: var(--page-pad);
+  --navbar-pad-right: var(--page-pad-right);
   --navbar-red: #be0000;
   --navbar-text: #ffffff;
   --navbar-gold: #e8b923;
@@ -15,7 +16,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 24px;
-  padding: 20px var(--navbar-pad);
+  padding:  20px var(--navbar-pad);
   font-family: var(--navbar-font);
   background: linear-gradient(180deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0) 100%);
 }
