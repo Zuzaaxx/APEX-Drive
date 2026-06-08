@@ -1,4 +1,13 @@
 export const ORDER_STORAGE_KEY = 'apex-checkout-order'
+export const CONFIRMATION_STORAGE_KEY = 'apex-confirmation'
+export const TRACK_VENUE = 'TOR KRAKÓW, WYŚCIGOWA 3'
+export const TRACK_VENUE_MAP = 'TOR KRAKÓW — WYŚCIGOWA 3'
+
+const PAYMENT_LABELS = {
+    blik: 'BLIK',
+    card: 'KARTA PŁATNICZA',
+    transfer: 'PRZELEW ONLINE',
+}
 
 const DEFAULT_INFO = {
     title: 'BRAK UKRYTYCH KOSZTÓW',
@@ -110,7 +119,7 @@ export function buildCarCheckoutOrder({
         badge: 'TRACK READY',
         meta: [
             { label: 'DATA SESJI', value: formatSessionDate(selectedDays) },
-            { label: 'LOKALIZACJA', value: 'TOR POZNAŃ' },
+            { label: 'LOKALIZACJA', value: TRACK_VENUE },
         ],
         lineItems: buildLineItems(pricing, trackPackage, driveVideo),
         total: pricing.total,
@@ -174,6 +183,66 @@ export function buildTrainingCheckoutOrder({ program, instructor, sessionDate })
         infoDesc:
             'Cena obejmuje czas na torze, pracę z instruktorem, analizę telemetrii oraz ubezpieczenie uczestnika.',
     }
+}
+
+function slugify(value) {
+    return value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+}
+
+function generateReservationId(order) {
+    const prefix = order.type?.slice(0, 2).toUpperCase() ?? 'AX'
+    const slug = slugify(order.title).slice(0, 24).toUpperCase()
+    return `${prefix}-${slug}-2024`
+}
+
+function getMetaValue(order, label) {
+    return order.meta?.find((item) => item.label === label)?.value ?? null
+}
+
+export function buildConfirmationFromOrder(order, paymentMethod) {
+    const sessionDate =
+        getMetaValue(order, 'DATA SESJI') ??
+        getMetaValue(order, 'DATA') ??
+        getMetaValue(order, 'DOŚWIADCZENIE') ??
+        'DO USTALENIA'
+
+    return {
+        ...order,
+        reservationId: generateReservationId(order),
+        sessionDate,
+        location: TRACK_VENUE,
+        locationMap: TRACK_VENUE_MAP,
+        instructor: getMetaValue(order, 'INSTRUKTOR') ?? 'ZESPÓŁ APEX DRIVE',
+        paymentMethod,
+        paymentLabel: PAYMENT_LABELS[paymentMethod] ?? paymentMethod,
+        productLabel: order.eyebrow,
+        subtitle: order.badge ?? order.type?.toUpperCase(),
+    }
+}
+
+export function saveConfirmation(confirmation) {
+    sessionStorage.setItem(CONFIRMATION_STORAGE_KEY, JSON.stringify(confirmation))
+}
+
+export function readConfirmation() {
+    try {
+        const raw = sessionStorage.getItem(CONFIRMATION_STORAGE_KEY)
+        if (!raw) return null
+        return JSON.parse(raw)
+    } catch {
+        return null
+    }
+}
+
+export function completeCheckout(order, paymentMethod, onNavigate) {
+    const confirmation = buildConfirmationFromOrder(order, paymentMethod)
+    saveConfirmation(confirmation)
+    onNavigate('/potwierdzenie')
 }
 
 export function buildEventCheckoutOrder(event) {

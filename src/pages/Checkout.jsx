@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
-import { readCheckoutOrder } from '../lib/checkoutOrder.js'
+import { completeCheckout, readCheckoutOrder } from '../lib/checkoutOrder.js'
 import './Checkout.css'
 
 const PAYMENT_METHODS = [
@@ -186,7 +186,7 @@ function Checkout({ onNavigate }) {
     }
 
     const handlePay = () => {
-        alert(`Płatność ${formatPrice(order.total)} — metoda: ${paymentMethod}`)
+        completeCheckout(order, paymentMethod, onNavigate)
     }
 
     return (

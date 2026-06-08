@@ -10,6 +10,7 @@ import Checkout from './pages/Checkout.jsx'
 import Training from './pages/Training.jsx'
 import TrainingDetail from './pages/TrainingDetail.jsx'
 import Safety from './pages/Safety.jsx'
+import Confirmation from './pages/Confirmation.jsx'
 import './App.css'
 
 function getCurrentPath() {
@@ -43,6 +44,10 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [path])
+
   const navigate = (to) => {
     if (to === path) {
       return
@@ -73,6 +78,8 @@ function App() {
         <Safety />
       ) : path === '/checkout' ? (
         <Checkout onNavigate={navigate} />
+      ) : path === '/potwierdzenie' ? (
+        <Confirmation onNavigate={navigate} />
       ) : (
         <Start onNavigate={navigate} />
       )}

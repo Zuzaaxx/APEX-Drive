@@ -94,7 +94,7 @@ export const TRAINING_PROGRAMS = [
             { label: 'RAPORT Z SESJI', amount: 400 },
         ],
         maxPerSession: 4,
-        location: 'TOR WYŚCIGOWY',
+        location: 'TOR KRAKÓW, WYŚCIGOWA 3',
     },
     {
         id: 'linia-perfekcyjna',
@@ -146,7 +146,7 @@ export const TRAINING_PROGRAMS = [
             { label: 'TELEMETRIA POKŁADOWA', amount: 550 },
         ],
         maxPerSession: 3,
-        location: 'TOR WYŚCIGOWY',
+        location: 'TOR KRAKÓW, WYŚCIGOWA 3',
     },
     {
         id: 'nocna-sesja',
@@ -198,7 +198,7 @@ export const TRAINING_PROGRAMS = [
             { label: 'NAGRANIE WIDEO', amount: 450 },
         ],
         maxPerSession: 2,
-        location: 'TOR WYŚCIGOWY',
+        location: 'TOR KRAKÓW, WYŚCIGOWA 3',
     },
     {
         id: 'telemetria-pro',
@@ -250,7 +250,7 @@ export const TRAINING_PROGRAMS = [
             { label: 'RAPORT TELEMETRYCZNY', amount: 550 },
         ],
         maxPerSession: 2,
-        location: 'TOR WYŚCIGOWY',
+        location: 'TOR KRAKÓW, WYŚCIGOWA 3',
     },
 ]
 
