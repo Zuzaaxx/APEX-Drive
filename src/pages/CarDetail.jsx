@@ -134,7 +134,7 @@ function CarDetail({ slug, onNavigate }) {
                         </button>
                     </div>
                 </main>
-                <Footer />
+                <Footer onNavigate={onNavigate} />
                 <ChatWidget />
             </>
         )
@@ -332,7 +332,7 @@ function CarDetail({ slug, onNavigate }) {
                     </aside>
                 </div>
             </main>
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </>
     )

@@ -167,7 +167,7 @@ function Login({ onNavigate }) {
                 </section>
             </main>
 
-            <Footer />
+            <Footer onNavigate={onNavigate} />
         </div>
     )
 }
