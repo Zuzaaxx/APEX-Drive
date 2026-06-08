@@ -110,8 +110,13 @@
 }
 
 .register-card__header {
-  margin-bottom: 28px;
+  margin-bottom: 8px;
   text-align: center;
+}
+
+.register-card > .google-auth,
+.register-card > .auth-divider {
+  margin-bottom: 4px;
 }
 
 .register-card__title {

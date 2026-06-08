@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 24px;
-  padding:  20px var(--navbar-pad);
+  padding: 20px var(--navbar-pad-right) 20px var(--navbar-pad);
   font-family: var(--navbar-font);
   background: linear-gradient(180deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0) 100%);
 }
@@ -100,7 +100,9 @@
   border-radius: 2px;
   background: var(--navbar-red);
   color: #ffffff;
+  line-height: 1;
   letter-spacing: 0.16em;
+  justify-content: center;
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
@@ -114,6 +116,70 @@
 .navbar__user-icon {
   width: 22px;
   height: 22px;
+}
+
+.navbar__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar__user--mobile {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+}
+
+.navbar__user--mobile .navbar__avatar {
+  width: 36px;
+  height: 36px;
+  align-self: center;
+}
+
+.navbar__user-name {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navbar-text);
+}
+
+.navbar__user--mobile .navbar__user-name {
+  max-width: none;
+  text-align: center;
+}
+
+.navbar__logout {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--navbar-gold-bright);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.navbar__logout:hover {
+  color: #ffffff;
 }
 
 .navbar__actions {
@@ -300,7 +366,8 @@
     flex: 0;
   }
 
-  .navbar__login--desktop {
+  .navbar__login--desktop,
+  .navbar__user--desktop {
     display: none;
   }
 

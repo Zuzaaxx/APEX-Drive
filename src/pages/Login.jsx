@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import './Login.css'
 
 function KeyIcon() {
@@ -28,6 +30,7 @@ function GuestIcon() {
 }
 
 function Login({ onNavigate }) {
+    const { isAuthenticated } = useAuth()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -38,6 +41,16 @@ function Login({ onNavigate }) {
     const handleGuest = () => {
         onNavigate('/')
     }
+
+    const handleAuthSuccess = () => {
+        onNavigate('/')
+    }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            onNavigate('/')
+        }
+    }, [isAuthenticated, onNavigate])
 
     return (
         <div className="login-page">
@@ -81,6 +94,10 @@ function Login({ onNavigate }) {
                                     </p>
                                 </div>
                             </header>
+
+                            <GoogleAuthButton onSuccess={handleAuthSuccess} />
+
+                            <AuthDivider />
 
                             <form className="login-form" onSubmit={handleSubmit} noValidate>
                                 <div className="login-form__field">

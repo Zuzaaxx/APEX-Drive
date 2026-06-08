@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import './Register.css'
 
 function UserIcon() {
@@ -53,6 +55,7 @@ const FEATURES = [
 ]
 
 function Register({ onNavigate }) {
+    const { isAuthenticated } = useAuth()
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -62,6 +65,16 @@ function Register({ onNavigate }) {
     const handleSubmit = (event) => {
         event.preventDefault()
     }
+
+    const handleAuthSuccess = () => {
+        onNavigate('/')
+    }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            onNavigate('/')
+        }
+    }, [isAuthenticated, onNavigate])
 
     return (
         <div className="register-page">
@@ -80,6 +93,13 @@ function Register({ onNavigate }) {
                             ZAREJESTRUJ SIĘ W PROGRAMIE KINETIC PRECISION
                         </p>
                     </header>
+
+                    <GoogleAuthButton
+                        onSuccess={handleAuthSuccess}
+                        label="ZAREJESTRUJ SIĘ Z GOOGLE"
+                    />
+
+                    <AuthDivider />
 
                     <form className="register-form" onSubmit={handleSubmit} noValidate>
                         <div className="register-form__field">
