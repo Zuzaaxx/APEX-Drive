@@ -8,10 +8,16 @@ import Vouchers from './pages/Vouchers.jsx'
 import Register from './pages/Register.jsx'
 import Account from './pages/Account.jsx'
 import About from './pages/About.jsx'
+import Notify from './pages/Notify.jsx'
 import './App.css'
 
 function getCurrentPath() {
   return window.location.pathname || '/'
+}
+
+function getPathname(route) {
+  const withoutHash = route.split('#')[0] || '/'
+  return withoutHash.split('?')[0] || '/'
 }
 
 function getCarSlug(path) {
@@ -35,7 +41,7 @@ function App() {
   }, [])
 
   const navigate = (to) => {
-    const targetPath = to.split('#')[0] || '/'
+    const targetPath = getPathname(to)
     const hash = to.includes('#') ? to.slice(to.indexOf('#')) : ''
 
     if (targetPath === path) {
@@ -44,7 +50,7 @@ function App() {
           document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
         }, 80)
       } else {
-        window.history.replaceState({}, '', targetPath)
+        window.history.replaceState({}, '', to)
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
       return
@@ -71,6 +77,8 @@ function App() {
         <Account onNavigate={navigate} />
       ) : path === '/about' ? (
         <About onNavigate={navigate} />
+      ) : path === '/notify' ? (
+        <Notify onNavigate={navigate} />
       ) : (
         <Start onNavigate={navigate} />
       )}
