@@ -84,6 +84,8 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
         onNavigate('/login')
     }
 
+    const isAuthPage = currentPath === '/login' || currentPath === '/register'
+
     useEffect(() => {
         if (!menuOpen) {
             return undefined
@@ -140,15 +142,15 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                 <button
                     type="button"
                     className={
-                        currentPath === '/login'
+                        isAuthPage
                             ? 'navbar__login navbar__login--desktop navbar__login--cta'
                             : 'navbar__login navbar__login--desktop'
                     }
                     onClick={handleLoginClick}
                     aria-current={currentPath === '/login' ? 'page' : undefined}
                 >
-                    {currentPath === '/login' ? 'ZALOGUJ' : 'LOGIN'}
-                    {currentPath !== '/login' && <UserIcon />}
+                    {isAuthPage ? 'ZALOGUJ' : 'LOGIN'}
+                    {!isAuthPage && <UserIcon />}
                 </button>
 
                 <button
@@ -195,15 +197,15 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                     <button
                         type="button"
                         className={
-                            currentPath === '/login'
+                            isAuthPage
                                 ? 'navbar__mobile-login navbar__mobile-login--cta'
                                 : 'navbar__mobile-login'
                         }
                         onClick={handleLoginClick}
                         aria-current={currentPath === '/login' ? 'page' : undefined}
                     >
-                        {currentPath === '/login' ? 'ZALOGUJ' : 'LOGIN'}
-                        {currentPath !== '/login' && <UserIcon />}
+                        {isAuthPage ? 'ZALOGUJ' : 'LOGIN'}
+                        {!isAuthPage && <UserIcon />}
                     </button>
                 </nav>
             </div>
