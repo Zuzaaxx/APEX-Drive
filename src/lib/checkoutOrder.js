@@ -9,7 +9,7 @@ const SOURCE_PATHS = {
     car: '/cars',
     voucher: '/vouchers',
     event: '/',
-    training: '/',
+    training: '/szkolenia',
 }
 
 /**
@@ -148,6 +148,26 @@ export function buildVoucherCheckoutOrder({
         infoDesc: 'Cena obejmuje VAT 23% oraz ubezpieczenie. Voucher ważny 12 miesięcy.',
         voucherType,
         selectedModelId: isOpen ? null : selectedModelId,
+    }
+}
+
+export function buildTrainingCheckoutOrder(program) {
+    return {
+        type: 'training',
+        eyebrow: 'SZKOLENIE',
+        title: program.title,
+        image: program.image,
+        badge: program.level,
+        meta: [
+            { label: 'CZAS TRWANIA', value: program.duration },
+            { label: 'INSTRUKTOR', value: program.instructor },
+        ],
+        lineItems: [{ label: `PAKIET — ${program.title}`, amount: program.price }],
+        total: program.price,
+        sourcePath: '/szkolenia',
+        infoTitle: DEFAULT_INFO.title,
+        infoDesc:
+            'Cena obejmuje czas na torze, pracę z instruktorem, analizę telemetrii oraz ubezpieczenie uczestnika.',
     }
 }
 
