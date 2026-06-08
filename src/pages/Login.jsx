@@ -44,12 +44,12 @@ function Login({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/')
+        onNavigate('/account')
     }
 
     useEffect(() => {
         if (isAuthenticated) {
-            onNavigate('/')
+            onNavigate('/account')
         }
     }, [isAuthenticated, onNavigate])
 

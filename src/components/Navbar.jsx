@@ -101,6 +101,11 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
         onNavigate('/')
     }
 
+    const handleAccountClick = () => {
+        closeMenu()
+        onNavigate('/account')
+    }
+
     const isAuthPage = currentPath === '/login' || currentPath === '/register'
 
     useEffect(() => {
@@ -161,18 +166,25 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
             <div className="navbar__actions">
                 {isAuthenticated ? (
                     <div className="navbar__user navbar__user--desktop">
-                        {user.picture ? (
-                            <img
-                                className="navbar__avatar"
-                                src={user.picture}
-                                alt=""
-                                width={32}
-                                height={32}
-                            />
-                        ) : (
-                            <UserIcon />
-                        )}
-                        <span className="navbar__user-name">{user.name}</span>
+                        <button
+                            type="button"
+                            className="navbar__account"
+                            onClick={handleAccountClick}
+                            aria-current={currentPath === '/account' ? 'page' : undefined}
+                        >
+                            {user.picture ? (
+                                <img
+                                    className="navbar__avatar"
+                                    src={user.picture}
+                                    alt=""
+                                    width={32}
+                                    height={32}
+                                />
+                            ) : (
+                                <UserIcon />
+                            )}
+                            <span className="navbar__user-name">{user.name}</span>
+                        </button>
                         <button
                             type="button"
                             className="navbar__logout"
@@ -240,18 +252,25 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                     {renderNavLinks('navbar__mobile-link')}
                     {isAuthenticated ? (
                         <div className="navbar__user navbar__user--mobile">
-                            {user.picture ? (
-                                <img
-                                    className="navbar__avatar"
-                                    src={user.picture}
-                                    alt=""
-                                    width={36}
-                                    height={36}
-                                />
-                            ) : (
-                                <UserIcon />
-                            )}
-                            <span className="navbar__user-name">{user.name}</span>
+                            <button
+                                type="button"
+                                className="navbar__account navbar__account--mobile"
+                                onClick={handleAccountClick}
+                                aria-current={currentPath === '/account' ? 'page' : undefined}
+                            >
+                                {user.picture ? (
+                                    <img
+                                        className="navbar__avatar"
+                                        src={user.picture}
+                                        alt=""
+                                        width={36}
+                                        height={36}
+                                    />
+                                ) : (
+                                    <UserIcon />
+                                )}
+                                <span className="navbar__user-name">{user.name}</span>
+                            </button>
                             <button
                                 type="button"
                                 className="navbar__mobile-login navbar__mobile-login--cta"
