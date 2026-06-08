@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx'
 import Cars from './pages/Cars.jsx'
 import CarDetail from './pages/CarDetail.jsx'
 import Vouchers from './pages/Vouchers.jsx'
+import Register from './pages/Register.jsx'
 import './App.css'
 
 function getCurrentPath() {
@@ -45,6 +46,8 @@ function App() {
       <Navbar onNavigate={navigate} currentPath={path} />
       {path === '/login' ? (
         <Login onNavigate={navigate} />
+      ) : path === '/register' ? (
+        <Register onNavigate={navigate} />
       ) : getCarSlug(path) ? (
         <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
       ) : path === '/cars' ? (
