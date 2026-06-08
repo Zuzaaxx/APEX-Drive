@@ -149,7 +149,7 @@ function Cars({ onNavigate }) {
                     </div>
                 </section>
             </main>
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </>
     )

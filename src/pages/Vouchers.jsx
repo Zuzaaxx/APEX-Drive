@@ -60,7 +60,7 @@ function CalendarIcon() {
     )
 }
 
-function Vouchers() {
+function Vouchers({ onNavigate }) {
     const [voucherType, setVoucherType] = useState('specific')
     const [recipientName, setRecipientName] = useState('JAN KOWALSKI')
     const [message, setMessage] = useState(
@@ -297,7 +297,7 @@ function Vouchers() {
                     </div>
                 </div>
             </main>
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </>
     )

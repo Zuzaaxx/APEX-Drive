@@ -241,7 +241,7 @@ function Start({ onNavigate }) {
                 </div>
             </section>
 
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </div>
     )

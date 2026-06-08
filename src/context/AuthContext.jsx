@@ -34,14 +34,27 @@ export function AuthProvider({ children }) {
         localStorage.removeItem(AUTH_STORAGE_KEY)
     }, [])
 
+    const updateProfile = useCallback((updates) => {
+        setUser((current) => {
+            if (!current) {
+                return null
+            }
+
+            const nextUser = { ...current, ...updates }
+            localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextUser))
+            return nextUser
+        })
+    }, [])
+
     const value = useMemo(
         () => ({
             user,
             isAuthenticated: Boolean(user),
             loginWithGoogle,
             logout,
+            updateProfile,
         }),
-        [user, loginWithGoogle, logout],
+        [user, loginWithGoogle, logout, updateProfile],
     )
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -44,12 +44,12 @@ function Login({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/')
+        onNavigate('/account')
     }
 
     useEffect(() => {
         if (isAuthenticated) {
-            onNavigate('/')
+            onNavigate('/account')
         }
     }, [isAuthenticated, onNavigate])
 
@@ -167,7 +167,7 @@ function Login({ onNavigate }) {
                 </section>
             </main>
 
-            <Footer />
+            <Footer onNavigate={onNavigate} />
         </div>
     )
 }

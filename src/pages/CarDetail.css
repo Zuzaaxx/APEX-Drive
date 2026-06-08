@@ -580,6 +580,38 @@
   background: var(--detail-red-hover);
 }
 
+.car-detail__notify-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 10px;
+  border: 1px solid var(--detail-red);
+  background: transparent;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.car-detail__notify-btn:hover {
+  background: rgba(190, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.car-detail__notify-btn svg {
+  width: 14px;
+  height: 14px;
+  color: var(--detail-red);
+}
+
 .car-detail__payment-note {
   margin: 12px 0 0;
   font-size: 0.58rem;

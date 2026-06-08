@@ -12,6 +12,18 @@ const MONTHS = [
 
 const WAVE_HEIGHTS = [4, 8, 12, 6, 16, 10, 20, 14, 8, 18, 12, 22, 16, 10, 24, 18, 12, 8, 14, 20, 10, 6, 12, 16]
 
+const NOTIFY_CAR_BY_SLUG = {
+    'porsche-911-gt3-rs': '911-gt3',
+    'lamborghini-sto': 'gr-yaris',
+    'mclaren-720s': 'm3-comp',
+    'ferrari-sf90-stradale': 'm3-comp',
+}
+
+function getNotifyPath(slug) {
+    const carId = NOTIFY_CAR_BY_SLUG[slug]
+    return carId ? `/notify?car=${carId}` : '/notify'
+}
+
 function formatPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
 }
@@ -134,7 +146,7 @@ function CarDetail({ slug, onNavigate }) {
                         </button>
                     </div>
                 </main>
-                <Footer />
+                <Footer onNavigate={onNavigate} />
                 <ChatWidget />
             </>
         )
@@ -326,13 +338,23 @@ function CarDetail({ slug, onNavigate }) {
                         >
                             REZERWUJ TERAZ
                         </button>
+                        <button
+                            type="button"
+                            className="car-detail__notify-btn"
+                            onClick={() => onNavigate(getNotifyPath(slug))}
+                        >
+                            POWIADOM MNIE
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+                            </svg>
+                        </button>
                         <p className="car-detail__payment-note">
                             Bezpieczna płatność przez Stripe. Kaucja zwrotna: 20 000 PLN.
                         </p>
                     </aside>
                 </div>
             </main>
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </>
     )
