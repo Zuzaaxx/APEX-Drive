@@ -2,9 +2,9 @@ import { useEffect, useId, useState } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
 import './Navbar.css'
 
-const DEFAULT_NAV_ITEMS = [
-    { label: 'VOUCHERY', href: '#vouchery' },
-    { label: 'SAMOCHODY', href: '#samochody' },
+export const DEFAULT_NAV_ITEMS = [
+    { label: 'VOUCHERY', href: '/vouchers' },
+    { label: 'SAMOCHODY', href: '/cars' },
     { label: 'SZKOLENIA', href: '#szkolenia' },
     { label: 'BEZPIECZEŃSTWO', href: '#bezpieczenstwo' },
 ]
@@ -62,6 +62,15 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
     }
 
     const handleNavClick = (event, href) => {
+        // Internal SPA route (starts with /)
+        if (href.startsWith('/')) {
+            event.preventDefault()
+            closeMenu()
+            onNavigate(href)
+            return
+        }
+
+        // Hash links that scroll on the home page
         if (!href.startsWith('#')) {
             closeMenu()
             return
@@ -114,13 +123,16 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
         }
     }, [menuOpen])
 
+    const isNavActive = (href) => href.startsWith('/') && currentPath === href
+
     const renderNavLinks = (linkClassName) => (
         <ul className="navbar__list">
             {navItems.map((item) => (
                 <li key={item.label}>
                     <a
                         href={item.href}
-                        className={linkClassName}
+                        className={`${linkClassName}${isNavActive(item.href) ? ' navbar__link--active' : ''}`}
+                        aria-current={isNavActive(item.href) ? 'page' : undefined}
                         onClick={(event) => handleNavClick(event, item.href)}
                     >
                         {item.label}

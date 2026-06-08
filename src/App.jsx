@@ -2,11 +2,21 @@ import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
+import Cars from './pages/Cars.jsx'
+import CarDetail from './pages/CarDetail.jsx'
+import Vouchers from './pages/Vouchers.jsx'
 import Register from './pages/Register.jsx'
 import './App.css'
 
 function getCurrentPath() {
   return window.location.pathname || '/'
+}
+
+function getCarSlug(path) {
+  if (!path.startsWith('/cars/')) {
+    return null
+  }
+  return path.slice('/cars/'.length) || null
 }
 
 function App() {
@@ -34,9 +44,19 @@ function App() {
   return (
     <>
       <Navbar onNavigate={navigate} currentPath={path} />
-      {path === '/login' && <Login onNavigate={navigate} />}
-      {path === '/register' && <Register onNavigate={navigate} />}
-      {path !== '/login' && path !== '/register' && <Start />}
+      {path === '/login' ? (
+        <Login onNavigate={navigate} />
+      ) : path === '/register' ? (
+        <Register onNavigate={navigate} />
+      ) : getCarSlug(path) ? (
+        <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
+      ) : path === '/cars' ? (
+        <Cars onNavigate={navigate} />
+      ) : path === '/vouchers' ? (
+        <Vouchers />
+      ) : (
+        <Start onNavigate={navigate} />
+      )}
     </>
   )
 }
