@@ -1,30 +1,17 @@
 import './Start.css'
 import { useMemo, useState } from 'react'
 import { CARS } from '../data/cars.js'
+import { EVENTS, formatEventPrice } from '../data/events.js'
 import CarCard from '../components/CarCard.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 
-const EVENTS = [
-    {
-        date: 'NOVEMBER 8',
-        title: 'NIGHT ATTACK: NÜRBURGRING',
-        desc: 'High-intensity telemetry sessions under the lights.',
-        image: '/images/hero-track.jpg',
-    },
-    {
-        date: 'NOVEMBER 12',
-        title: 'TELEMETRY MASTERCLASS',
-        desc: 'Analyze your lap times with professional engineers.',
-        image: '/images/cars/mclaren-720s.jpg',
-    },
-    {
-        date: 'DECEMBER 05',
-        title: 'WINTER STAGE: FINLAND',
-        desc: 'Ice driving experience at the limit of grip.',
-        image: '/images/cars/porsche-911.jpg',
-    },
-]
+const CAR_PAGE_EVENTS = EVENTS.slice(0, 3).map((event) => ({
+    date: `${event.day} ${event.month} 2026`,
+    title: event.title,
+    desc: `${event.track} — od ${formatEventPrice(event.price)}`,
+    image: event.image,
+}))
 
 function Cars({ onNavigate }) {
     const [search, setSearch] = useState('')
@@ -131,11 +118,18 @@ function Cars({ onNavigate }) {
 
                 <section className="section cars-events">
                     <div className="cars-events__head">
-                        <h2 className="cars-events__title">UPCOMING EVENTS</h2>
+                        <h2 className="cars-events__title">NADCHODZĄCE WYDARZENIA</h2>
                         <span className="cars-events__line" aria-hidden="true" />
+                        <button
+                            type="button"
+                            className="cars-events__calendar-btn"
+                            onClick={() => onNavigate?.('/kalendarz')}
+                        >
+                            PEŁNY KALENDARZ →
+                        </button>
                     </div>
                     <div className="cars-events__grid">
-                        {EVENTS.map((event) => (
+                        {CAR_PAGE_EVENTS.map((event) => (
                             <article key={event.title} className="cars-event-tile">
                                 <img src={event.image} alt={event.title} loading="lazy" />
                                 <div className="cars-event-tile__overlay" />

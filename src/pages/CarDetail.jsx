@@ -1,15 +1,10 @@
 import { useMemo, useState } from 'react'
 import { getCarBySlug } from '../data/cars.js'
+import BookingCalendar from '../components/BookingCalendar.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import { buildCarCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './CarDetail.css'
-
-const WEEKDAYS = ['PN', 'WT', 'ŚR', 'CZ', 'PT', 'SB', 'ND']
-const MONTHS = [
-    'STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC',
-    'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ', 'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ',
-]
 
 const WAVE_HEIGHTS = [4, 8, 12, 6, 16, 10, 20, 14, 8, 18, 12, 22, 16, 10, 24, 18, 12, 8, 14, 20, 10, 6, 12, 16]
 
@@ -238,10 +233,11 @@ function CarDetail({ slug, onNavigate }) {
                             </div>
                         </div>
 
+                        {car.gallery.length > 1 && (
                         <div className="car-detail__thumbs">
-                            {car.gallery.slice(0, 3).map((src, index) => (
+                            {car.gallery.map((src, index) => (
                                 <button
-                                    key={src}
+                                    key={`${src}-${index}`}
                                     type="button"
                                     className={`car-detail__thumb${activeImage === index ? ' car-detail__thumb--active' : ''}`}
                                     onClick={() => setActiveImage(index)}
@@ -249,15 +245,8 @@ function CarDetail({ slug, onNavigate }) {
                                     <img src={src} alt="" loading="lazy" />
                                 </button>
                             ))}
-                            <button
-                                type="button"
-                                className={`car-detail__thumb${activeImage === 3 ? ' car-detail__thumb--active' : ''}`}
-                                onClick={() => setActiveImage(3)}
-                            >
-                                <img src={car.gallery[3]} alt="" loading="lazy" />
-                                <span className="car-detail__thumb-more">+12</span>
-                            </button>
                         </div>
+                        )}
 
                         <section className="car-detail__audio" aria-label="Telemetria dźwięku">
                             <p className="car-detail__audio-label">TELEMETRIA DŹWIĘKU</p>
@@ -317,6 +306,18 @@ function CarDetail({ slug, onNavigate }) {
 
                         <div className="car-detail__info">
                             <h1 className="car-detail__title">{car.detailTitle}</h1>
+                            {car.trackName && (
+                                <p className="car-detail__track-note">
+                                    TOR:{' '}
+                                    <button
+                                        type="button"
+                                        className="car-detail__track-link"
+                                        onClick={() => onNavigate?.('/track')}
+                                    >
+                                        {car.trackName}
+                                    </button>
+                                </p>
+                            )}
                             <p className="car-detail__desc">{car.description}</p>
                         </div>
                     </div>
@@ -324,7 +325,7 @@ function CarDetail({ slug, onNavigate }) {
                     <aside className="car-detail__sidebar">
                         <h2 className="car-detail__sidebar-title">KONFIGURATOR WYNAJMU</h2>
 
-                        <Calendar
+                        <BookingCalendar
                             selectedDays={selectedDays}
                             unavailableDays={unavailableDays}
                             onToggleDay={toggleDay}
@@ -337,7 +338,14 @@ function CarDetail({ slug, onNavigate }) {
                                 <div className="car-detail__addon-info">
                                     <p className="car-detail__addon-name">PAKIET TOROWY</p>
                                     <p className="car-detail__addon-desc">
-                                        Instruktor, paliwo wyścigowe i sesja telemetrii.
+                                        Instruktor, paliwo wyścigowe i sesja telemetrii na torze APEX Drive.{' '}
+                                        <button
+                                            type="button"
+                                            className="car-detail__track-link"
+                                            onClick={() => onNavigate?.('/track')}
+                                        >
+                                            Zobacz tor
+                                        </button>
                                     </p>
                                 </div>
                                 <button
@@ -396,9 +404,9 @@ function CarDetail({ slug, onNavigate }) {
                         <button
                             type="button"
                             className="car-detail__reserve-btn"
-                            onClick={handleReserve}
+                            onClick={() => onNavigate?.('/account')}
                         >
-                            REZERWUJ TERAZ
+                            REZERWUJ TERMIN
                         </button>
                         <button
                             type="button"

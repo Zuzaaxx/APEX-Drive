@@ -1,0 +1,127 @@
+/* Wspólny kalendarz rezerwacji */
+
+.booking-calendar {
+  --cal-border: #2a2a2a;
+  --cal-gold: #e8b923;
+  --cal-gold-bright: #f5c842;
+  --cal-muted: #a3a3a3;
+  --cal-font: 'Rajdhani', 'Segoe UI', system-ui, sans-serif;
+
+  margin-bottom: 22px;
+  font-family: var(--cal-font);
+}
+
+.booking-calendar button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.booking-calendar__label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cal-muted);
+}
+
+.booking-calendar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.booking-calendar__month {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e0e0e0;
+}
+
+.booking-calendar__nav {
+  display: flex;
+  gap: 6px;
+}
+
+.booking-calendar__nav button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--cal-border);
+  background: transparent;
+  color: var(--cal-muted);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.booking-calendar__nav button:hover {
+  border-color: var(--cal-gold);
+  color: var(--cal-gold-bright);
+}
+
+.booking-calendar__nav button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.booking-calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.booking-calendar__weekdays span {
+  text-align: center;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.booking-calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.booking-calendar__day {
+  aspect-ratio: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #c8c8c8;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.booking-calendar__day:hover:not(:disabled) {
+  border-color: #4a4021;
+}
+
+.booking-calendar__day--empty {
+  pointer-events: none;
+}
+
+.booking-calendar__day--selected {
+  border-color: var(--cal-gold);
+  background: var(--cal-gold);
+  color: #0a0a0a;
+}
+
+.booking-calendar__day--unavailable {
+  border-color: #4a1515;
+  background: #2a0a0a;
+  color: #8a4040;
+  cursor: not-allowed;
+}

@@ -178,7 +178,7 @@ function Account({ onNavigate }) {
                             <article className="account-reservation account-reservation--completed">
                                 <p className="account-reservation__label">ZAKOŃCZONA</p>
                                 <h3 className="account-reservation__car">Lamborghini Huracán STO</h3>
-                                <p className="account-reservation__meta">SILESIA RING | 12.09.2024</p>
+                                <p className="account-reservation__meta">APEX DRIVE — SKAWINA | 12.09.2025</p>
                                 <button type="button" className="account-reservation__report">
                                     <DownloadIcon />
                                     POBIERZ RAPORT
