@@ -11,10 +11,18 @@ import Training from './pages/Training.jsx'
 import TrainingDetail from './pages/TrainingDetail.jsx'
 import Safety from './pages/Safety.jsx'
 import Confirmation from './pages/Confirmation.jsx'
+import Account from './pages/Account.jsx'
+import About from './pages/About.jsx'
+import Notify from './pages/Notify.jsx'
 import './App.css'
 
 function getCurrentPath() {
   return window.location.pathname || '/'
+}
+
+function getPathname(route) {
+  const withoutHash = route.split('#')[0] || '/'
+  return withoutHash.split('?')[0] || '/'
 }
 
 function getCarSlug(path) {
@@ -49,12 +57,23 @@ function App() {
   }, [path])
 
   const navigate = (to) => {
-    if (to === path) {
+    const targetPath = getPathname(to)
+    const hash = to.includes('#') ? to.slice(to.indexOf('#')) : ''
+
+    if (targetPath === path) {
+      if (hash) {
+        window.setTimeout(() => {
+          document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+        }, 80)
+      } else {
+        window.history.replaceState({}, '', to)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
       return
     }
 
     window.history.pushState({}, '', to)
-    setPath(to)
+    setPath(targetPath)
   }
 
   return (
@@ -80,6 +99,12 @@ function App() {
         <Checkout onNavigate={navigate} />
       ) : path === '/potwierdzenie' ? (
         <Confirmation onNavigate={navigate} />
+      ) : path === '/account' ? (
+        <Account onNavigate={navigate} />
+      ) : path === '/about' ? (
+        <About onNavigate={navigate} />
+      ) : path === '/notify' ? (
+        <Notify onNavigate={navigate} />
       ) : (
         <Start onNavigate={navigate} />
       )}

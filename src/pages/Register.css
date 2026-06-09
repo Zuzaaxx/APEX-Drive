@@ -382,66 +382,6 @@
   color: var(--reg-heading);
 }
 
-/* Stopka */
-
-.register-footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px 32px;
-  padding: 28px var(--reg-pad-right) 32px var(--reg-pad);
-  background: #000000;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.register-footer__brand {
-  display: grid;
-  gap: 8px;
-}
-
-.register-footer__logo {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--reg-heading);
-}
-
-.register-footer__logo-apex {
-  color: var(--reg-red);
-}
-
-.register-footer__copy {
-  margin: 0;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--reg-muted);
-}
-
-.register-footer__nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(16px, 3vw, 28px);
-}
-
-.register-footer__nav a {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--reg-muted);
-  transition: color 0.2s ease;
-}
-
-.register-footer__nav a:hover {
-  color: var(--reg-heading);
-}
-
 /* Responsywność */
 
 @media (max-width: 720px) {
@@ -469,16 +409,5 @@
   .register-card__progress {
     margin-left: -24px;
     margin-right: -24px;
-  }
-
-  .register-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-right: var(--layout-gutter, 24px);
-    padding-left: var(--layout-gutter, 24px);
-  }
-
-  .register-footer__nav {
-    gap: 14px 20px;
   }
 }

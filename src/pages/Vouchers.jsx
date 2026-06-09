@@ -312,7 +312,7 @@ function Vouchers({ onNavigate }) {
                     </div>
                 </div>
             </main>
-            <Footer />
+            <Footer onNavigate={onNavigate} />
             <ChatWidget />
         </>
     )

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import './Login.css'
@@ -43,12 +44,12 @@ function Login({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/')
+        onNavigate('/account')
     }
 
     useEffect(() => {
         if (isAuthenticated) {
-            onNavigate('/')
+            onNavigate('/account')
         }
     }, [isAuthenticated, onNavigate])
 
@@ -166,22 +167,7 @@ function Login({ onNavigate }) {
                 </section>
             </main>
 
-            <footer className="login-footer">
-                <div className="login-footer__brand">
-                    <span className="login-footer__logo">
-                        <span className="login-footer__logo-apex">APEX</span> DRIVE
-                    </span>
-                    <p className="login-footer__copy">
-                        © 2024 APEX DRIVE. KINETIC PRECISION ENGINEERING.
-                    </p>
-                </div>
-                <nav className="login-footer__nav" aria-label="Stopka logowania">
-                    <a href="#regulamin">REGULAMIN</a>
-                    <a href="#polityka">POLITYKA PRYWATNOŚCI</a>
-                    <a href="#kontakt">KONTAKT</a>
-                    <a href="#faq">FAQ</a>
-                </nav>
-            </footer>
+            <Footer onNavigate={onNavigate} />
         </div>
     )
 }

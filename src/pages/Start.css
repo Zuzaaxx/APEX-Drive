@@ -887,73 +887,6 @@
   background: var(--home-red-hover);
 }
 
-/* Footer */
-
-.home-footer {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px 20px;
-  padding: 28px var(--home-pad);
-  border-top: 1px solid var(--home-border);
-  background: #000000;
-}
-
-.home-footer__end {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px 20px;
-  margin-right: calc(var(--fab-size, 48px) + var(--layout-gutter, 24px));
-}
-
-.home-footer__logo {
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--home-heading);
-  opacity: 0.85;
-}
-
-.home-footer__logo-apex {
-  color: var(--home-red);
-}
-
-.home-footer__nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 12px 16px;
-}
-
-.home-footer__nav a {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--home-muted);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.home-footer__nav a:hover {
-  color: var(--home-text);
-}
-
-.home-footer__copy {
-  margin: 0;
-  text-align: right;
-  white-space: nowrap;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--home-muted);
-}
-
 /* Responsive */
 
 @media (max-width: 1024px) {
@@ -1044,25 +977,6 @@
     align-self: center;
   }
 
-  .home-footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .home-footer__end {
-    flex-direction: column;
-    margin-right: 0;
-  }
-
-  .home-footer__nav {
-    justify-content: center;
-  }
-
-  .home-footer__copy {
-    text-align: center;
-    white-space: normal;
-  }
 }
 
 @media (max-width: 480px) {
