@@ -26,8 +26,23 @@ function Footer({ onNavigate }) {
         window.location.href = target
     }
 
+function navigateTo(path) {
+    if (window.location.pathname === path) {
+        return
+    }
+
+    window.history.pushState({}, '', path)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
+function Footer() {
+    const handleFaqClick = (event) => {
+        event.preventDefault()
+        navigateTo('/bezpieczenstwo')
+    }
+
     return (
-        <footer className="home-footer" id="bezpieczenstwo">
+        <footer className="home-footer">
             <span className="home-footer__logo">
                 APEX DRIVE
             </span>
@@ -38,6 +53,10 @@ function Footer({ onNavigate }) {
                     </a>
                     <a href="#regulamin">REGULAMIN</a>
                     <a href="#polityka">POLITYKA PRYWATNOŚCI</a>
+                    <a href="#kontakt">KONTAKT</a>
+                    <a href="/bezpieczenstwo" onClick={handleFaqClick}>
+                        FAQ
+                    </a>
                     <a href="/about#kontakt" onClick={(e) => handleAboutClick(e, '#kontakt')}>
                         KONTAKT
                     </a>

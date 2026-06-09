@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { getCarBySlug } from '../data/cars.js'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
+import { buildCarCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './CarDetail.css'
 
 const WEEKDAYS = ['PN', 'WT', 'ŚR', 'CZ', 'PT', 'SB', 'ND']
@@ -26,6 +27,50 @@ function getNotifyPath(slug) {
 
 function formatPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
+}
+
+function formatSessionDate(selectedDays) {
+    const year = 2024
+    const month = 11
+    const monthName = MONTHS[month]
+
+    if (selectedDays.length === 0) {
+        return `${monthName} ${year}`
+    }
+    if (selectedDays.length === 1) {
+        return `${selectedDays[0]} ${monthName} ${year}`
+    }
+
+    const sorted = [...selectedDays].sort((a, b) => a - b)
+    return `${sorted[0]}–${sorted[sorted.length - 1]} ${monthName} ${year}`
+}
+
+function buildLineItems(pricing, trackPackage, driveVideo) {
+    const items = []
+
+    if (trackPackage) {
+        items.push({
+            label: 'WYNAJEM TORU I INSTRUKTOR',
+            amount: pricing.base + pricing.insurance,
+        })
+    } else {
+        items.push({
+            label: `WYNAJEM POJAZDU (${pricing.days} ${pricing.days === 1 ? 'DZIEŃ' : 'DNI'})`,
+            amount: pricing.base,
+        })
+        if (pricing.insurance > 0) {
+            items.push({ label: 'UBEZPIECZENIE', amount: pricing.insurance })
+        }
+    }
+
+    if (pricing.video > 0) {
+        items.push({
+            label: driveVideo ? 'PAKIET TELEMETRYCZNY' : 'FILM Z PRZEJAZDU',
+            amount: pricing.video,
+        })
+    }
+
+    return items
 }
 
 function Calendar({ selectedDays, unavailableDays, onToggleDay }) {
@@ -132,6 +177,23 @@ function CarDetail({ slug, onNavigate }) {
             }
             return [...prev, day].sort((a, b) => a - b)
         })
+    }
+
+    const handleReserve = () => {
+        if (!pricing) return
+
+        goToCheckout(
+            buildCarCheckoutOrder({
+                car,
+                selectedDays,
+                pricing,
+                trackPackage,
+                driveVideo,
+                formatSessionDate,
+                buildLineItems,
+            }),
+            onNavigate,
+        )
     }
 
     if (!car) {
@@ -334,7 +396,7 @@ function CarDetail({ slug, onNavigate }) {
                         <button
                             type="button"
                             className="car-detail__reserve-btn"
-                            onClick={() => alert(`Rezerwacja: ${car.name}`)}
+                            onClick={handleReserve}
                         >
                             REZERWUJ TERAZ
                         </button>

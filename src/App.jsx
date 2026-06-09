@@ -6,6 +6,11 @@ import Cars from './pages/Cars.jsx'
 import CarDetail from './pages/CarDetail.jsx'
 import Vouchers from './pages/Vouchers.jsx'
 import Register from './pages/Register.jsx'
+import Checkout from './pages/Checkout.jsx'
+import Training from './pages/Training.jsx'
+import TrainingDetail from './pages/TrainingDetail.jsx'
+import Safety from './pages/Safety.jsx'
+import Confirmation from './pages/Confirmation.jsx'
 import Account from './pages/Account.jsx'
 import About from './pages/About.jsx'
 import Notify from './pages/Notify.jsx'
@@ -27,6 +32,13 @@ function getCarSlug(path) {
   return path.slice('/cars/'.length) || null
 }
 
+function getTrainingSlug(path) {
+  if (!path.startsWith('/szkolenia/')) {
+    return null
+  }
+  return path.slice('/szkolenia/'.length) || null
+}
+
 function App() {
   const [path, setPath] = useState(getCurrentPath)
 
@@ -39,6 +51,10 @@ function App() {
 
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [path])
 
   const navigate = (to) => {
     const targetPath = getPathname(to)
@@ -73,6 +89,16 @@ function App() {
         <Cars onNavigate={navigate} />
       ) : path === '/vouchers' ? (
         <Vouchers onNavigate={navigate} />
+      ) : getTrainingSlug(path) ? (
+        <TrainingDetail slug={getTrainingSlug(path)} onNavigate={navigate} />
+      ) : path === '/szkolenia' ? (
+        <Training onNavigate={navigate} />
+      ) : path === '/bezpieczenstwo' ? (
+        <Safety />
+      ) : path === '/checkout' ? (
+        <Checkout onNavigate={navigate} />
+      ) : path === '/potwierdzenie' ? (
+        <Confirmation onNavigate={navigate} />
       ) : path === '/account' ? (
         <Account onNavigate={navigate} />
       ) : path === '/about' ? (
