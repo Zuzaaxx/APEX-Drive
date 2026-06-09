@@ -10,6 +10,7 @@ import Account from './pages/Account.jsx'
 import About from './pages/About.jsx'
 import Notify from './pages/Notify.jsx'
 import NotFound from './pages/NotFound.jsx'
+import TrackDetail from './pages/TrackDetail.jsx'
 import './App.css'
 
 import { getCarBySlug } from './data/cars.js'
@@ -70,6 +71,8 @@ function App() {
         <Login onNavigate={navigate} />
       ) : path === '/register' ? (
         <Register onNavigate={navigate} />
+      ) : path === '/track' ? (
+        <TrackDetail slug="silesia-ring" onNavigate={navigate} />
       ) : getCarSlug(path) ? (
         getCarBySlug(getCarSlug(path)) ? (
           <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />

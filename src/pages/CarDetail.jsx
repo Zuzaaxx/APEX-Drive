@@ -1,14 +1,9 @@
 import { useMemo, useState } from 'react'
 import { getCarBySlug } from '../data/cars.js'
+import BookingCalendar from '../components/BookingCalendar.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import './CarDetail.css'
-
-const WEEKDAYS = ['PN', 'WT', 'ŚR', 'CZ', 'PT', 'SB', 'ND']
-const MONTHS = [
-    'STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC',
-    'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ', 'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ',
-]
 
 const WAVE_HEIGHTS = [4, 8, 12, 6, 16, 10, 20, 14, 8, 18, 12, 22, 16, 10, 24, 18, 12, 8, 14, 20, 10, 6, 12, 16]
 
@@ -26,78 +21,6 @@ function getNotifyPath(slug) {
 
 function formatPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
-}
-
-function Calendar({ selectedDays, unavailableDays, onToggleDay }) {
-    const year = 2024
-    const month = 11
-    const daysInMonth = 31
-    const firstDayOffset = 6
-
-    const days = useMemo(() => {
-        const cells = []
-        for (let i = 0; i < firstDayOffset; i += 1) {
-            cells.push({ empty: true, key: `e-${i}` })
-        }
-        for (let day = 1; day <= daysInMonth; day += 1) {
-            cells.push({ day, key: `d-${day}` })
-        }
-        return cells
-    }, [])
-
-    return (
-        <div className="car-detail__calendar">
-            <span className="car-detail__section-label">WYBIERZ TERMIN</span>
-            <div className="car-detail__calendar-head">
-                <span className="car-detail__calendar-month">
-                    {MONTHS[month]} {year}
-                </span>
-                <div className="car-detail__calendar-nav">
-                    <button type="button" aria-label="Poprzedni miesiąc">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-                    <button type="button" aria-label="Następny miesiąc">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div className="car-detail__calendar-weekdays">
-                {WEEKDAYS.map((day) => (
-                    <span key={day}>{day}</span>
-                ))}
-            </div>
-            <div className="car-detail__calendar-days">
-                {days.map((cell) => {
-                    if (cell.empty) {
-                        return <span key={cell.key} className="car-detail__calendar-day car-detail__calendar-day--empty" />
-                    }
-
-                    const isUnavailable = unavailableDays.includes(cell.day)
-                    const isSelected = selectedDays.includes(cell.day)
-
-                    return (
-                        <button
-                            key={cell.key}
-                            type="button"
-                            disabled={isUnavailable}
-                            className={[
-                                'car-detail__calendar-day',
-                                isSelected ? 'car-detail__calendar-day--selected' : '',
-                                isUnavailable ? 'car-detail__calendar-day--unavailable' : '',
-                            ].filter(Boolean).join(' ')}
-                            onClick={() => onToggleDay(cell.day)}
-                        >
-                            {cell.day}
-                        </button>
-                    )
-                })}
-            </div>
-        </div>
-    )
 }
 
 function CarDetail({ slug, onNavigate }) {
@@ -262,7 +185,7 @@ function CarDetail({ slug, onNavigate }) {
                     <aside className="car-detail__sidebar">
                         <h2 className="car-detail__sidebar-title">KONFIGURATOR WYNAJMU</h2>
 
-                        <Calendar
+                        <BookingCalendar
                             selectedDays={selectedDays}
                             unavailableDays={unavailableDays}
                             onToggleDay={toggleDay}

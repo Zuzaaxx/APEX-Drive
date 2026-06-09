@@ -23,7 +23,7 @@ const SERVICE_CARDS = [
         ],
         cta: 'SPRAWDŹ SZCZEGÓŁY',
         ctaVariant: 'red',
-        link: '/about',
+        link: '/track',
     },
     {
         label: 'FLOTA APEX DRIVE',

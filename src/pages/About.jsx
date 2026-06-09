@@ -243,7 +243,11 @@ function About({ onNavigate }) {
                                     </li>
                                 ))}
                             </ul>
-                            <button type="button" className="about-btn about-btn--red about-btn--full">
+                            <button
+                                type="button"
+                                className="about-btn about-btn--red about-btn--full"
+                                onClick={() => onNavigate?.('/track')}
+                            >
                                 ZAREZERWUJ TOR
                             </button>
                         </div>
