@@ -17,8 +17,9 @@ const DEFAULT_INFO = {
 const SOURCE_PATHS = {
     car: '/cars',
     voucher: '/vouchers',
-    event: '/',
+    event: '/kalendarz',
     training: '/szkolenia',
+    track: '/track',
 }
 
 /**
@@ -35,7 +36,7 @@ const SOURCE_PATHS = {
 
 /**
  * @typedef {Object} CheckoutOrder
- * @property {'car' | 'voucher' | 'event' | 'training'} type
+ * @property {'car' | 'voucher' | 'event' | 'training' | 'track'} type
  * @property {string} eyebrow
  * @property {string} title
  * @property {string} image
@@ -246,22 +247,60 @@ export function completeCheckout(order, paymentMethod, onNavigate) {
 }
 
 export function buildEventCheckoutOrder(event) {
+    const spotsLeft = event.spotsLeft ?? null
+    const slotsLabel =
+        event.slots ??
+        (spotsLeft != null
+            ? `${spotsLeft} ${spotsLeft === 1 ? 'SLOT' : 'SLOTY'}`
+            : '1 SLOT')
+    const urgent = event.urgent ?? (spotsLeft != null && spotsLeft <= 3)
+
     return {
         type: 'event',
         eyebrow: 'WYDARZENIE',
         title: event.title,
         image: event.image ?? '/images/hero-track.jpg',
-        badge: event.urgent ? 'OSTATNIE MIEJSCA' : 'WOLNE MIEJSCA',
+        badge: urgent ? 'OSTATNIE MIEJSCA' : 'WOLNE MIEJSCA',
         meta: [
-            { label: 'DATA', value: `${event.day} ${event.month} 2024` },
+            { label: 'DATA', value: `${event.day} ${event.month} 2026` },
             { label: 'LOKALIZACJA', value: event.track },
+            ...(event.lead ? [{ label: 'LEAD', value: event.lead }] : []),
         ],
-        lineItems: [
-            { label: `REZERWACJA — ${event.slots}`, amount: event.price },
-        ],
+        lineItems: [{ label: `REZERWACJA — ${slotsLabel}`, amount: event.price }],
         total: event.price,
-        sourcePath: '/',
+        sourcePath: '/kalendarz',
         infoTitle: DEFAULT_INFO.title,
         infoDesc: 'Cena obejmuje dostęp do toru, wsparcie techniczne i ubezpieczenie uczestnika.',
+    }
+}
+
+export function buildTrackCheckoutOrder({ track, sessionDate, total, videoRecording }) {
+    const lineItems = [
+        { label: 'WYNAJEM TORU (CAŁY DZIEŃ)', amount: track.pricing.trackRental },
+        { label: 'INSTRUKTOR (POZIOM II)', amount: track.pricing.instructor },
+    ]
+
+    if (videoRecording) {
+        lineItems.push({
+            label: 'NAGRANIE WIDEO Z TORU',
+            amount: track.pricing.videoRecording,
+        })
+    }
+
+    return {
+        type: 'track',
+        eyebrow: 'TOR',
+        title: track.name,
+        image: track.heroImage,
+        badge: track.tag,
+        meta: [
+            { label: 'DATA SESJI', value: sessionDate },
+            { label: 'LOKALIZACJA', value: TRACK_VENUE },
+        ],
+        lineItems,
+        total,
+        sourcePath: '/track',
+        infoTitle: DEFAULT_INFO.title,
+        infoDesc: 'Cena obejmuje wynajem toru, obsługę techniczną, briefing i wsparcie na miejscu.',
     }
 }

@@ -3,6 +3,7 @@ import Footer from '../components/Footer.jsx'
 import CarCard from '../components/CarCard.jsx'
 import { CARS } from '../data/cars.js'
 import { getHomepageEvents } from '../data/events.js'
+import { buildEventCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './Start.css'
 
 const STATS = [
@@ -168,6 +169,11 @@ function Start({ onNavigate }) {
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    const handleEventReserve = (event) => {
+        if (!onNavigate) return
+        goToCheckout(buildEventCheckoutOrder(event), onNavigate)
     }
 
     return (
@@ -394,7 +400,7 @@ function Start({ onNavigate }) {
                                             : 'event-row__book'
                                     }
                                     aria-label={`Rezerwuj: ${event.title}`}
-                                    onClick={() => onNavigate?.(event.bookPath)}
+                                    onClick={() => handleEventReserve(event)}
                                 >
                                     REZERWUJ
                                     <ArrowIcon />

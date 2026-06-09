@@ -3,10 +3,30 @@ import { getTrackBySlug } from '../data/tracks.js'
 import BookingCalendar from '../components/BookingCalendar.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
+import { buildTrackCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './TrackDetail.css'
+
+const BOOKING_MONTHS = [
+    'STYCZEŃ', 'LUTY', 'MARZEC', 'KWIECIEŃ', 'MAJ', 'CZERWIEC',
+    'LIPIEC', 'SIERPIEŃ', 'WRZESIEŃ', 'PAŹDZIERNIK', 'LISTOPAD', 'GRUDZIEŃ',
+]
 
 function formatPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
+}
+
+function formatSessionDate(selectedDays, year = 2024, month = 11) {
+    const monthName = BOOKING_MONTHS[month]
+
+    if (selectedDays.length === 0) {
+        return `${monthName} ${year}`
+    }
+    if (selectedDays.length === 1) {
+        return `${selectedDays[0]} ${monthName} ${year}`
+    }
+
+    const sorted = [...selectedDays].sort((a, b) => a - b)
+    return `${sorted[0]}–${sorted[sorted.length - 1]} ${monthName} ${year}`
 }
 
 function StarRating({ count = 5 }) {
@@ -101,6 +121,20 @@ function TrackDetail({ slug, onNavigate }) {
         const { trackRental, instructor, videoRecording: videoPrice } = track.pricing
         return trackRental + instructor + (videoRecording ? videoPrice : 0)
     }, [track, videoRecording])
+
+    const handleBook = () => {
+        if (!track) return
+
+        goToCheckout(
+            buildTrackCheckoutOrder({
+                track,
+                sessionDate: formatSessionDate(selectedDays),
+                total,
+                videoRecording,
+            }),
+            onNavigate,
+        )
+    }
 
     if (!track) {
         return null
@@ -217,7 +251,7 @@ function TrackDetail({ slug, onNavigate }) {
                                 <span>Szacunkowy koszt</span>
                                 <span>{formatPrice(total)}</span>
                             </div>
-                            <button type="button" className="track-detail__book-btn" onClick={() => onNavigate?.('/account')}>
+                            <button type="button" className="track-detail__book-btn" onClick={handleBook}>
                                 ZAREZERWUJ DOŚWIADCZENIE
                             </button>
                             <div className="track-detail__cost-footer">
