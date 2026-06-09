@@ -1,5 +1,19 @@
 import './Footer.css'
 
+function navigateWithSpa(path, onNavigate) {
+    if (window.location.pathname === path) {
+        return
+    }
+
+    if (onNavigate) {
+        onNavigate(path)
+        return
+    }
+
+    window.history.pushState({}, '', path)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 function Footer({ onNavigate }) {
     const handleLinkClick = (event, href) => {
         event.preventDefault()
@@ -22,8 +36,13 @@ function Footer({ onNavigate }) {
         onNavigate(target)
     }
 
+    const handleFaqClick = (event) => {
+        event.preventDefault()
+        navigateWithSpa('/bezpieczenstwo', onNavigate)
+    }
+
     return (
-        <footer className="home-footer" id="bezpieczenstwo">
+        <footer className="home-footer">
             <span className="home-footer__logo">
                 APEX DRIVE
             </span>
@@ -43,6 +62,8 @@ function Footer({ onNavigate }) {
                     </a>
                     <a href="/about" onClick={(e) => handleLinkClick(e, '/about')}>
                         BEZPIECZEŃSTWO
+                    <a href="/bezpieczenstwo" onClick={handleFaqClick}>
+                        FAQ
                     </a>
                 </nav>
                 <p className="home-footer__copy">© 2026 APEX DRIVE. ENGINEERED FOR SPEED.</p>

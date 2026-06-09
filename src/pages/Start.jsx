@@ -3,6 +3,7 @@ import Footer from '../components/Footer.jsx'
 import CarCard from '../components/CarCard.jsx'
 import { CARS } from '../data/cars.js'
 import { getHomepageEvents } from '../data/events.js'
+import { buildEventCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './Start.css'
 
 const STATS = [
@@ -74,6 +75,40 @@ const PRECISION_FEATURES = [
         icon: 'wrench',
         title: 'PEŁNA OBSŁUGA',
         text: 'Od rezerwacji online po briefing przed jazdą — dbamy o każdy detal, żebyś mógł skupić się wyłącznie na jeździe.',
+        day: '24',
+        month: 'PAŹ',
+        title: 'OPEN TRACK DAY',
+        track: 'Autodrom Słomczyno',
+        slots: '4 SLOTY',
+        status: 'OSTATNIE MIEJSCA',
+        urgent: true,
+        featured: true,
+        price: 890,
+        image: '/images/hero-track.jpg',
+    },
+    {
+        day: '31',
+        month: 'PAŹ',
+        title: 'VIP HOT LAP SESSION',
+        track: 'Tor Kielce',
+        slots: '6 SLOTÓW',
+        status: 'WOLNE MIEJSCA',
+        urgent: false,
+        featured: false,
+        price: 1250,
+        image: '/images/cars/mclaren-720s.jpg',
+    },
+    {
+        day: '07',
+        month: 'LIS',
+        title: 'GT4 TRAINING DAY',
+        track: 'Autodrom Poznań',
+        slots: '2 SLOTY',
+        status: 'OSTATNIE MIEJSCA',
+        urgent: true,
+        featured: false,
+        price: 1490,
+        image: '/images/cars/porsche-911.jpg',
     },
 ]
 
@@ -168,6 +203,9 @@ function Start({ onNavigate }) {
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
+    const handleEventReserve = (event) => {
+        if (!onNavigate) return
+        goToCheckout(buildEventCheckoutOrder(event), onNavigate)
     }
 
     return (

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
+import { buildVoucherCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './Vouchers.css'
 
 const VOUCHER_MODELS = [
@@ -75,6 +76,20 @@ function Vouchers({ onNavigate }) {
 
     const displayName = recipientName.trim() || 'JAN KOWALSKI'
     const displayMessage = message.trim() || 'Twoja dedykacja pojawi się tutaj...'
+
+    const handlePurchase = () => {
+        if (!onNavigate) return
+
+        goToCheckout(
+            buildVoucherCheckoutOrder({
+                voucherType,
+                activeModel,
+                recipientName: displayName,
+                selectedModelId: selectedModel,
+            }),
+            onNavigate,
+        )
+    }
 
     return (
         <>
@@ -173,7 +188,7 @@ function Vouchers({ onNavigate }) {
                             <button
                                 type="button"
                                 className="vouchers-page__purchase-btn"
-                                onClick={() => alert(`Zakup vouchera: ${formatPrice(activeModel.price)} PLN`)}
+                                onClick={handlePurchase}
                             >
                                 PURCHASE VOUCHER
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

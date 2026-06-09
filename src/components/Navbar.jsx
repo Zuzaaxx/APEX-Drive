@@ -8,6 +8,7 @@ export const DEFAULT_NAV_ITEMS = [
     { label: 'TOR', href: '/track' },
     { label: 'SZKOLENIA', href: '/szkolenia' },
     { label: 'O NAS', href: '/about' },
+    { label: 'BEZPIECZEŃSTWO', href: '/bezpieczenstwo' },
 ]
 
 function UserIcon() {

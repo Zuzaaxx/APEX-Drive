@@ -3,6 +3,7 @@ import { getCarBySlug } from '../data/cars.js'
 import BookingCalendar from '../components/BookingCalendar.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
+import { buildCarCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import './CarDetail.css'
 
 const WAVE_HEIGHTS = [4, 8, 12, 6, 16, 10, 20, 14, 8, 18, 12, 22, 16, 10, 24, 18, 12, 8, 14, 20, 10, 6, 12, 16]
@@ -21,6 +22,122 @@ function getNotifyPath(slug) {
 
 function formatPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
+}
+
+function formatSessionDate(selectedDays) {
+    const year = 2024
+    const month = 11
+    const monthName = MONTHS[month]
+
+    if (selectedDays.length === 0) {
+        return `${monthName} ${year}`
+    }
+    if (selectedDays.length === 1) {
+        return `${selectedDays[0]} ${monthName} ${year}`
+    }
+
+    const sorted = [...selectedDays].sort((a, b) => a - b)
+    return `${sorted[0]}–${sorted[sorted.length - 1]} ${monthName} ${year}`
+}
+
+function buildLineItems(pricing, trackPackage, driveVideo) {
+    const items = []
+
+    if (trackPackage) {
+        items.push({
+            label: 'WYNAJEM TORU I INSTRUKTOR',
+            amount: pricing.base + pricing.insurance,
+        })
+    } else {
+        items.push({
+            label: `WYNAJEM POJAZDU (${pricing.days} ${pricing.days === 1 ? 'DZIEŃ' : 'DNI'})`,
+            amount: pricing.base,
+        })
+        if (pricing.insurance > 0) {
+            items.push({ label: 'UBEZPIECZENIE', amount: pricing.insurance })
+        }
+    }
+
+    if (pricing.video > 0) {
+        items.push({
+            label: driveVideo ? 'PAKIET TELEMETRYCZNY' : 'FILM Z PRZEJAZDU',
+            amount: pricing.video,
+        })
+    }
+
+    return items
+}
+
+function Calendar({ selectedDays, unavailableDays, onToggleDay }) {
+    const year = 2024
+    const month = 11
+    const daysInMonth = 31
+    const firstDayOffset = 6
+
+    const days = useMemo(() => {
+        const cells = []
+        for (let i = 0; i < firstDayOffset; i += 1) {
+            cells.push({ empty: true, key: `e-${i}` })
+        }
+        for (let day = 1; day <= daysInMonth; day += 1) {
+            cells.push({ day, key: `d-${day}` })
+        }
+        return cells
+    }, [])
+
+    return (
+        <div className="car-detail__calendar">
+            <span className="car-detail__section-label">WYBIERZ TERMIN</span>
+            <div className="car-detail__calendar-head">
+                <span className="car-detail__calendar-month">
+                    {MONTHS[month]} {year}
+                </span>
+                <div className="car-detail__calendar-nav">
+                    <button type="button" aria-label="Poprzedni miesiąc">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                    <button type="button" aria-label="Następny miesiąc">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div className="car-detail__calendar-weekdays">
+                {WEEKDAYS.map((day) => (
+                    <span key={day}>{day}</span>
+                ))}
+            </div>
+            <div className="car-detail__calendar-days">
+                {days.map((cell) => {
+                    if (cell.empty) {
+                        return <span key={cell.key} className="car-detail__calendar-day car-detail__calendar-day--empty" />
+                    }
+
+                    const isUnavailable = unavailableDays.includes(cell.day)
+                    const isSelected = selectedDays.includes(cell.day)
+
+                    return (
+                        <button
+                            key={cell.key}
+                            type="button"
+                            disabled={isUnavailable}
+                            className={[
+                                'car-detail__calendar-day',
+                                isSelected ? 'car-detail__calendar-day--selected' : '',
+                                isUnavailable ? 'car-detail__calendar-day--unavailable' : '',
+                            ].filter(Boolean).join(' ')}
+                            onClick={() => onToggleDay(cell.day)}
+                        >
+                            {cell.day}
+                        </button>
+                    )
+                })}
+            </div>
+        </div>
+    )
 }
 
 function CarDetail({ slug, onNavigate }) {
@@ -55,6 +172,23 @@ function CarDetail({ slug, onNavigate }) {
             }
             return [...prev, day].sort((a, b) => a - b)
         })
+    }
+
+    const handleReserve = () => {
+        if (!pricing) return
+
+        goToCheckout(
+            buildCarCheckoutOrder({
+                car,
+                selectedDays,
+                pricing,
+                trackPackage,
+                driveVideo,
+                formatSessionDate,
+                buildLineItems,
+            }),
+            onNavigate,
+        )
     }
 
     if (!car) {

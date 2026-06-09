@@ -1,0 +1,540 @@
+/* Finalizacja zamówienia */
+
+.checkout {
+  --co-bg: #050505;
+  --co-surface: #111111;
+  --co-surface-2: #1a1a1a;
+  --co-border: #2a2a2a;
+  --co-gold: #e8b923;
+  --co-gold-bright: #f5c842;
+  --co-red: #be0000;
+  --co-red-hover: #d40000;
+  --co-muted: #a3a3a3;
+  --co-max: 1200px;
+  --co-pad: clamp(20px, 4vw, 48px);
+  --co-font: 'Rajdhani', 'Segoe UI', system-ui, sans-serif;
+
+  min-height: 100vh;
+  padding: 96px var(--co-pad) 0;
+  background: var(--co-bg);
+  color: #fff;
+  font-family: var(--co-font);
+}
+
+.checkout *,
+.checkout *::before,
+.checkout *::after {
+  box-sizing: border-box;
+}
+
+.checkout img {
+  display: block;
+  max-width: 100%;
+}
+
+.checkout button,
+.checkout input,
+.checkout select {
+  font: inherit;
+}
+
+.checkout__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(28px, 4vw, 48px);
+  max-width: var(--co-max);
+  margin: 0 auto;
+  padding-bottom: 56px;
+  align-items: start;
+}
+
+/* Nagłówki sekcji */
+
+.checkout__heading {
+  margin: 0 0 20px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.checkout__heading::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-top: 10px;
+  background: var(--co-gold);
+}
+
+.checkout__heading--plain::after {
+  display: none;
+}
+
+.checkout__payment-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.checkout__payment-head .checkout__heading {
+  margin-bottom: 0;
+}
+
+.checkout__step {
+  flex-shrink: 0;
+  margin-top: 6px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.checkout__eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--co-gold-bright);
+}
+
+.checkout__eyebrow--methods {
+  margin-bottom: 12px;
+}
+
+/* Karta podsumowania */
+
+.checkout__summary-card {
+  padding: 18px;
+  border: 1px solid var(--co-border);
+  background: var(--co-surface);
+}
+
+.checkout__vehicle-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.checkout__vehicle-name {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.checkout__badge {
+  flex-shrink: 0;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid var(--co-border);
+  border-left: 3px solid var(--co-gold);
+  background: var(--co-surface-2);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e0e0e0;
+  white-space: nowrap;
+}
+
+.checkout__vehicle-image {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 16px;
+  border: 1px solid var(--co-border);
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.checkout__vehicle-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.checkout__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--co-border);
+}
+
+.checkout__meta-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--co-muted);
+}
+
+.checkout__meta-value {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e8e8e8;
+}
+
+.checkout__lines {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.checkout__line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--co-muted);
+}
+
+.checkout__line span:last-child {
+  flex-shrink: 0;
+  color: #d0d0d0;
+}
+
+.checkout__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--co-border);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.checkout__total span:last-child {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  letter-spacing: 0.04em;
+  color: var(--co-gold-bright);
+}
+
+/* Karta informacyjna */
+
+.checkout__info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--co-border);
+  background: var(--co-surface);
+}
+
+.checkout__info-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--co-gold-bright);
+}
+
+.checkout__info-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.checkout__info-title {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.checkout__info-desc {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #777;
+}
+
+/* Metody płatności */
+
+.checkout__methods {
+  margin-top: 28px;
+}
+
+.checkout__method-list {
+  display: grid;
+  gap: 10px;
+}
+
+.checkout__method {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--co-border);
+  background: var(--co-surface);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.checkout__method:hover {
+  border-color: #4a4021;
+}
+
+.checkout__method--selected {
+  border-color: var(--co-gold);
+  background: rgba(232, 185, 35, 0.04);
+}
+
+.checkout__method-radio {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #555;
+  border-radius: 50%;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.checkout__method-radio--selected {
+  border-color: var(--co-gold);
+  background: radial-gradient(circle at center, var(--co-gold) 40%, transparent 42%);
+}
+
+.checkout__method-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.checkout__method-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.checkout__method-desc {
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  color: #777;
+}
+
+.checkout__method-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--co-muted);
+}
+
+.checkout__method-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.checkout__method--selected .checkout__method-icon {
+  color: var(--co-gold-bright);
+}
+
+/* Formularz płatności */
+
+.checkout__form {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--co-border);
+  background: var(--co-surface);
+}
+
+.checkout__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.checkout__field {
+  display: grid;
+  gap: 8px;
+}
+
+.checkout__field--full {
+  grid-column: 1 / -1;
+}
+
+.checkout__field-label {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--co-muted);
+}
+
+.checkout__field input,
+.checkout__select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--co-border);
+  border-radius: 0;
+  background: var(--co-surface-2);
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.checkout__field input::placeholder {
+  color: #555;
+}
+
+.checkout__field input:focus,
+.checkout__select:focus {
+  border-color: var(--co-gold);
+}
+
+.checkout__select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a3a3a3' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.checkout__select option {
+  background: var(--co-surface-2);
+  color: #fff;
+}
+
+/* Przycisk płatności */
+
+.checkout__pay-btn {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 24px;
+  border: 0;
+  background: var(--co-red);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkout__pay-btn:hover {
+  background: var(--co-red-hover);
+}
+
+.checkout__ssl-note {
+  margin: 14px 0 0;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #555;
+}
+
+/* Pusty stan */
+
+.checkout__empty {
+  max-width: var(--co-max);
+  margin: 0 auto;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.checkout__empty h1 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+
+.checkout__empty p {
+  margin: 0 0 24px;
+  color: var(--co-muted);
+}
+
+.checkout__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--co-gold);
+  background: transparent;
+  color: var(--co-gold-bright);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkout__back-btn:hover {
+  background: rgba(232, 185, 35, 0.1);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .checkout__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout__meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .checkout {
+    padding-top: 88px;
+  }
+
+  .checkout__form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout__vehicle-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
