@@ -1,19 +1,5 @@
 import './Footer.css'
 
-function navigateWithSpa(path, onNavigate) {
-    if (window.location.pathname === path) {
-        return
-    }
-
-    if (onNavigate) {
-        onNavigate(path)
-        return
-    }
-
-    window.history.pushState({}, '', path)
-    window.dispatchEvent(new PopStateEvent('popstate'))
-}
-
 function Footer({ onNavigate }) {
     const handleLinkClick = (event, href) => {
         event.preventDefault()
@@ -23,22 +9,19 @@ function Footer({ onNavigate }) {
             return
         }
 
-        const [path, hash = ''] = href.split('#')
-        const target = hash ? `${path}#${hash}` : path
+        const hashIndex = href.indexOf('#')
+        const path = hashIndex >= 0 ? href.slice(0, hashIndex) : href
+        const hash = hashIndex >= 0 ? href.slice(hashIndex) : ''
+        const target = hash ? `${path}${hash}` : path
         const currentPath = window.location.pathname || '/'
 
         if (currentPath === path && hash) {
             window.history.replaceState({}, '', target)
-            document.querySelector(`#${hash}`)?.scrollIntoView({ behavior: 'smooth' })
+            document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
             return
         }
 
         onNavigate(target)
-    }
-
-    const handleFaqClick = (event) => {
-        event.preventDefault()
-        navigateWithSpa('/bezpieczenstwo', onNavigate)
     }
 
     return (
@@ -60,9 +43,10 @@ function Footer({ onNavigate }) {
                     <a href="/about#kontakt" onClick={(e) => handleLinkClick(e, '/about#kontakt')}>
                         KONTAKT
                     </a>
-                    <a href="/about" onClick={(e) => handleLinkClick(e, '/about')}>
+                    <a href="/bezpieczenstwo" onClick={(e) => handleLinkClick(e, '/bezpieczenstwo')}>
                         BEZPIECZEŃSTWO
-                    <a href="/bezpieczenstwo" onClick={handleFaqClick}>
+                    </a>
+                    <a href="/bezpieczenstwo" onClick={(e) => handleLinkClick(e, '/bezpieczenstwo')}>
                         FAQ
                     </a>
                 </nav>

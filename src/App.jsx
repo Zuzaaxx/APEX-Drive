@@ -17,7 +17,6 @@ import Notify from './pages/Notify.jsx'
 import NotFound from './pages/NotFound.jsx'
 import TrackDetail from './pages/TrackDetail.jsx'
 import Events from './pages/Events.jsx'
-import Training from './pages/Training.jsx'
 import './App.css'
 
 import { getCarBySlug } from './data/cars.js'
