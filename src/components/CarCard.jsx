@@ -1,6 +1,6 @@
 import '../pages/Start.css'
 
-function CarCard({ badge, category, name, power, acceleration, image, price, onClick, highlightedReserve = false }) {
+function CarCard({ badge, badgeVariant = 'gold', category, name, power, acceleration, image, price, onClick, highlightedReserve = false, actionLabel = 'RESERVE' }) {
     const handleKeyDown = (event) => {
         if (!onClick) return
         if (event.key === 'Enter' || event.key === ' ') {
@@ -20,7 +20,9 @@ function CarCard({ badge, category, name, power, acceleration, image, price, onC
         >
             <div className="car-card__media">
                 <img src={image} alt={name} loading="lazy" />
-                {badge && <span className="car-card__badge">{badge}</span>}
+                {badge && (
+                    <span className={`car-card__badge car-card__badge--${badgeVariant}`}>{badge}</span>
+                )}
             </div>
             <div className="car-card__body">
                 <p className="car-card__category">{category}</p>
@@ -41,7 +43,7 @@ function CarCard({ badge, category, name, power, acceleration, image, price, onC
                         className={`car-card__reserve ${highlightedReserve ? 'car-card__reserve--hot' : ''}`}
                         aria-hidden="true"
                     >
-                        RESERVE
+                        {actionLabel}
                     </span>
                 </div>
             </div>
