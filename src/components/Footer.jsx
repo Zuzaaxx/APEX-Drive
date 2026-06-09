@@ -1,5 +1,19 @@
 import './Footer.css'
 
+function navigateWithSpa(path, onNavigate) {
+    if (window.location.pathname === path) {
+        return
+    }
+
+    if (onNavigate) {
+        onNavigate(path)
+        return
+    }
+
+    window.history.pushState({}, '', path)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 function Footer({ onNavigate }) {
     const handleAboutClick = (event, hash = '') => {
         event.preventDefault()
@@ -26,19 +40,9 @@ function Footer({ onNavigate }) {
         window.location.href = target
     }
 
-function navigateTo(path) {
-    if (window.location.pathname === path) {
-        return
-    }
-
-    window.history.pushState({}, '', path)
-    window.dispatchEvent(new PopStateEvent('popstate'))
-}
-
-function Footer() {
     const handleFaqClick = (event) => {
         event.preventDefault()
-        navigateTo('/bezpieczenstwo')
+        navigateWithSpa('/bezpieczenstwo', onNavigate)
     }
 
     return (
@@ -53,19 +57,17 @@ function Footer() {
                     </a>
                     <a href="#regulamin">REGULAMIN</a>
                     <a href="#polityka">POLITYKA PRYWATNOŚCI</a>
-                    <a href="#kontakt">KONTAKT</a>
-                    <a href="/bezpieczenstwo" onClick={handleFaqClick}>
-                        FAQ
-                    </a>
                     <a href="/about#kontakt" onClick={(e) => handleAboutClick(e, '#kontakt')}>
                         KONTAKT
                     </a>
-                    <a href="#faq">FAQ</a>
+                    <a href="/bezpieczenstwo" onClick={handleFaqClick}>
+                        FAQ
+                    </a>
                 </nav>
                 <p className="home-footer__copy">© 2026 APEX DRIVE. ENGINEERED FOR SPEED.</p>
             </div>
         </footer>
-  );    
+    )
 }
 
-export default Footer;
+export default Footer
