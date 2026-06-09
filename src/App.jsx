@@ -9,7 +9,10 @@ import Register from './pages/Register.jsx'
 import Account from './pages/Account.jsx'
 import About from './pages/About.jsx'
 import Notify from './pages/Notify.jsx'
+import NotFound from './pages/NotFound.jsx'
 import './App.css'
+
+import { getCarBySlug } from './data/cars.js'
 
 function getCurrentPath() {
   return window.location.pathname || '/'
@@ -68,7 +71,11 @@ function App() {
       ) : path === '/register' ? (
         <Register onNavigate={navigate} />
       ) : getCarSlug(path) ? (
-        <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
+        getCarBySlug(getCarSlug(path)) ? (
+          <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
+        ) : (
+          <NotFound onNavigate={navigate} />
+        )
       ) : path === '/cars' ? (
         <Cars onNavigate={navigate} />
       ) : path === '/vouchers' ? (
@@ -79,8 +86,10 @@ function App() {
         <About onNavigate={navigate} />
       ) : path === '/notify' ? (
         <Notify onNavigate={navigate} />
-      ) : (
+      ) : path === '/' ? (
         <Start onNavigate={navigate} />
+      ) : (
+        <NotFound onNavigate={navigate} />
       )}
     </>
   )
