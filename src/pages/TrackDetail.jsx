@@ -48,7 +48,7 @@ function TrackMap() {
                 className="track-detail__map-svg"
                 viewBox="0 0 400 280"
                 fill="none"
-                aria-label="Schemat toru Silesia Ring"
+                aria-label="Schemat toru APEX Drive"
             >
                 <path
                     d="M 80 140 C 80 80, 140 40, 200 50 C 260 60, 320 40, 340 90 C 360 140, 340 200, 280 220 C 220 240, 180 260, 140 230 C 100 200, 60 190, 50 160 C 40 130, 55 100, 80 90 C 105 80, 130 100, 120 130 C 110 160, 85 170, 80 140 Z"
@@ -217,7 +217,7 @@ function TrackDetail({ slug, onNavigate }) {
                                 <span>Szacunkowy koszt</span>
                                 <span>{formatPrice(total)}</span>
                             </div>
-                            <button type="button" className="track-detail__book-btn">
+                            <button type="button" className="track-detail__book-btn" onClick={() => onNavigate?.('/account')}>
                                 ZAREZERWUJ DOŚWIADCZENIE
                             </button>
                             <div className="track-detail__cost-footer">

@@ -5,8 +5,9 @@ import './Navbar.css'
 export const DEFAULT_NAV_ITEMS = [
     { label: 'VOUCHERY', href: '/vouchers' },
     { label: 'SAMOCHODY', href: '/cars' },
-    { label: 'SZKOLENIA', href: '/events' },
-    { label: 'BEZPIECZEŃSTWO', href: '#bezpieczenstwo' },
+    { label: 'TOR', href: '/track' },
+    { label: 'SZKOLENIA', href: '/szkolenia' },
+    { label: 'O NAS', href: '/about' },
 ]
 
 function UserIcon() {

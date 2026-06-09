@@ -11,10 +11,10 @@ const NAV_CARDS = [
     },
     {
         number: '02',
-        icon: 'calendar',
-        title: 'REZERWACJE',
-        desc: 'Twoje nadchodzące sesje na torze.',
-        href: '/account',
+        icon: 'track',
+        title: 'NASZ TOR',
+        desc: 'APEX Drive w Skawinie — specyfikacja i rezerwacja.',
+        href: '/track',
     },
     {
         number: '03',
@@ -22,6 +22,13 @@ const NAV_CARDS = [
         title: 'FLOTA',
         desc: 'Zobacz nasze maszyny wyścigowe.',
         href: '/cars',
+    },
+    {
+        number: '04',
+        icon: 'calendar',
+        title: 'KALENDARZ',
+        desc: 'Nadchodzące wydarzenia i wolne terminy.',
+        href: '/kalendarz',
     },
 ]
 
@@ -38,6 +45,14 @@ function CardIcon({ type }) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="16" rx="2" />
                 <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
+            </svg>
+        )
+    }
+    if (type === 'track') {
+        return (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" strokeLinejoin="round" />
+                <path d="M4 22v-7" strokeLinecap="round" />
             </svg>
         )
     }

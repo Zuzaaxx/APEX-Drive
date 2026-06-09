@@ -142,7 +142,7 @@
 
 .not-found__cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 48px;
 }
@@ -259,7 +259,7 @@
 
 @media (max-width: 900px) {
   .not-found__cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

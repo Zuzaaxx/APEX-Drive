@@ -99,10 +99,11 @@ function CarDetail({ slug, onNavigate }) {
                             </div>
                         </div>
 
+                        {car.gallery.length > 1 && (
                         <div className="car-detail__thumbs">
-                            {car.gallery.slice(0, 3).map((src, index) => (
+                            {car.gallery.map((src, index) => (
                                 <button
-                                    key={src}
+                                    key={`${src}-${index}`}
                                     type="button"
                                     className={`car-detail__thumb${activeImage === index ? ' car-detail__thumb--active' : ''}`}
                                     onClick={() => setActiveImage(index)}
@@ -110,15 +111,8 @@ function CarDetail({ slug, onNavigate }) {
                                     <img src={src} alt="" loading="lazy" />
                                 </button>
                             ))}
-                            <button
-                                type="button"
-                                className={`car-detail__thumb${activeImage === 3 ? ' car-detail__thumb--active' : ''}`}
-                                onClick={() => setActiveImage(3)}
-                            >
-                                <img src={car.gallery[3]} alt="" loading="lazy" />
-                                <span className="car-detail__thumb-more">+12</span>
-                            </button>
                         </div>
+                        )}
 
                         <section className="car-detail__audio" aria-label="Telemetria dźwięku">
                             <p className="car-detail__audio-label">TELEMETRIA DŹWIĘKU</p>
@@ -178,6 +172,18 @@ function CarDetail({ slug, onNavigate }) {
 
                         <div className="car-detail__info">
                             <h1 className="car-detail__title">{car.detailTitle}</h1>
+                            {car.trackName && (
+                                <p className="car-detail__track-note">
+                                    TOR:{' '}
+                                    <button
+                                        type="button"
+                                        className="car-detail__track-link"
+                                        onClick={() => onNavigate?.('/track')}
+                                    >
+                                        {car.trackName}
+                                    </button>
+                                </p>
+                            )}
                             <p className="car-detail__desc">{car.description}</p>
                         </div>
                     </div>
@@ -198,7 +204,14 @@ function CarDetail({ slug, onNavigate }) {
                                 <div className="car-detail__addon-info">
                                     <p className="car-detail__addon-name">PAKIET TOROWY</p>
                                     <p className="car-detail__addon-desc">
-                                        Instruktor, paliwo wyścigowe i sesja telemetrii.
+                                        Instruktor, paliwo wyścigowe i sesja telemetrii na torze APEX Drive.{' '}
+                                        <button
+                                            type="button"
+                                            className="car-detail__track-link"
+                                            onClick={() => onNavigate?.('/track')}
+                                        >
+                                            Zobacz tor
+                                        </button>
                                     </p>
                                 </div>
                                 <button
@@ -257,9 +270,9 @@ function CarDetail({ slug, onNavigate }) {
                         <button
                             type="button"
                             className="car-detail__reserve-btn"
-                            onClick={() => alert(`Rezerwacja: ${car.name}`)}
+                            onClick={() => onNavigate?.('/account')}
                         >
-                            REZERWUJ TERAZ
+                            REZERWUJ TERMIN
                         </button>
                         <button
                             type="button"

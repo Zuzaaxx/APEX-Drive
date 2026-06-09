@@ -2,11 +2,12 @@ import ChatWidget from '../components/ChatWidget.jsx'
 import Footer from '../components/Footer.jsx'
 import CarCard from '../components/CarCard.jsx'
 import { CARS } from '../data/cars.js'
+import { getHomepageEvents } from '../data/events.js'
 import './Start.css'
 
 const STATS = [
     { value: '2 400+', label: 'ZADOWOLONYCH KLIENTÓW' },
-    { value: '12', label: 'SUPERSAMOCHODÓW W FLOCIE' },
+    { value: '4', label: 'SUPERSAMOCHODY W FLOCIE' },
     { value: '4.9 / 5', label: 'ŚREDNIA OCENA' },
 ]
 
@@ -30,7 +31,7 @@ const SERVICE_CARDS = [
         title: 'WSIĄDŹ ZA KIEROWNICĘ MARZENIA',
         desc: 'Porsche, Lamborghini, Ferrari, McLaren — wybierz maszynę i poczuj moc na profesjonalnym asfalcie pod okiem instruktora.',
         features: [
-            'Ponad 12 supersamochodów',
+            '4 supersamochody klasy GT',
             'Ubezpieczenie w cenie',
             'Instruktor przy każdej jeździe',
             'Pełne wyposażenie bezpieczeństwa',
@@ -51,36 +52,6 @@ const VOUCHER_PERKS = [
     { icon: 'bolt', label: 'NATYCHMIASTOWA WYSYŁKA' },
     { icon: 'calendar', label: 'WAŻNOŚĆ 12 MIESIĘCY' },
     { icon: 'gift', label: 'PERSONALIZACJA PREZENTU' },
-]
-
-const UPCOMING_EVENTS = [
-    {
-        day: '24',
-        month: 'PAŹ',
-        title: 'OPEN TRACK DAY',
-        track: 'Autodrom Słomczyno',
-        slots: '4 SLOTY',
-        status: 'OSTATNIE MIEJSCA',
-        urgent: true,
-    },
-    {
-        day: '28',
-        month: 'PAŹ',
-        title: 'VIP HOT LAP SESSION',
-        track: 'Tor Kielce',
-        slots: '6 SLOTÓW',
-        status: 'WOLNE MIEJSCA',
-        urgent: false,
-    },
-    {
-        day: '02',
-        month: 'LIS',
-        title: 'GT4 TRAINING DAY',
-        track: 'Autodrom Poznań',
-        slots: '2 SLOTY',
-        status: 'OSTATNIE MIEJSCA',
-        urgent: true,
-    },
 ]
 
 const PRECISION_FEATURES = [
@@ -193,6 +164,7 @@ function DiamondIcon({ type }) {
 
 function Start({ onNavigate }) {
     const featuredCars = FEATURED_SLUGS.map((slug) => CARS.find((car) => car.slug === slug)).filter(Boolean)
+    const upcomingEvents = getHomepageEvents(3)
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -235,9 +207,9 @@ function Start({ onNavigate }) {
                         <button
                             type="button"
                             className="btn btn--outline-gold"
-                            onClick={() => onNavigate?.('/cars')}
+                            onClick={() => onNavigate?.('/track')}
                         >
-                            NASZE AUTA
+                            NASZ TOR
                         </button>
                     </div>
                 </div>
@@ -369,22 +341,22 @@ function Start({ onNavigate }) {
                 </div>
             </section>
 
-            <section id="szkolenia" className="section events-section">
+            <section id="terminy" className="section events-section">
                 <div className="events-grid">
                     <div className="events-intro">
                         <h2 className="events-intro__title">NADCHODZĄCE WOLNE TERMINY</h2>
                         <p className="events-intro__desc">
-                            Sprawdź najbliższe wolne sloty na torze. Rezerwuj z wyprzedzeniem —
-                            najlepsze terminy znikają w kilka dni.
+                            Sprawdź najbliższe wolne sloty na torze i torach partnerskich.
+                            Rezerwuj z wyprzedzeniem — najlepsze terminy znikają w kilka dni.
                         </p>
                         <p className="events-intro__season">
                             <CalendarIcon />
-                            SEZON: MARZEC – LISTOPAD
+                            SEZON: MARZEC – LISTOPAD 2026
                         </p>
                         <button
                             type="button"
                             className="events-intro__calendar"
-                            onClick={() => onNavigate?.('/events')}
+                            onClick={() => onNavigate?.('/kalendarz')}
                         >
                             ZOBACZ PEŁNY KALENDARZ
                             <ArrowIcon />
@@ -392,8 +364,8 @@ function Start({ onNavigate }) {
                     </div>
 
                     <ul className="events-list">
-                        {UPCOMING_EVENTS.map((event) => (
-                            <li key={`${event.day}-${event.month}`} className="event-row">
+                        {upcomingEvents.map((event) => (
+                            <li key={event.id} className="event-row">
                                 <div className="event-row__date">
                                     <span className="event-row__day">{event.day}</span>
                                     <span className="event-row__month">{event.month}</span>
@@ -422,6 +394,7 @@ function Start({ onNavigate }) {
                                             : 'event-row__book'
                                     }
                                     aria-label={`Rezerwuj: ${event.title}`}
+                                    onClick={() => onNavigate?.(event.bookPath)}
                                 >
                                     REZERWUJ
                                     <ArrowIcon />

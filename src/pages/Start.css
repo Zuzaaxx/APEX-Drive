@@ -718,6 +718,30 @@
   background: #8f761f;
 }
 
+.cars-events__calendar-btn {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1px solid #2a2a2a;
+  background: #111111;
+  color: #f5f5f5;
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.cars-events__calendar-btn:hover {
+  border-color: #8f761f;
+  background: #1a1a1a;
+  color: var(--home-gold-bright, #f5c842);
+}
+
 .cars-events__grid {
   max-width: var(--home-max);
   margin: 0 auto;

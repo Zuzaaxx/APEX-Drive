@@ -347,6 +347,25 @@
   flex-shrink: 0;
 }
 
+.event-card__track-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--ev-gold-bright);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.event-card__track-link:hover {
+  opacity: 0.85;
+}
+
 .event-card__availability {
   display: flex;
   flex-direction: column;

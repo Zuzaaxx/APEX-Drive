@@ -4,6 +4,7 @@ import {
     EVENT_PERIODS,
     EVENTS,
     formatEventPrice,
+    getEventBookPath,
 } from '../data/events.js'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
@@ -44,8 +45,14 @@ function ChevronIcon() {
     )
 }
 
-function EventCard({ event }) {
+function EventCard({ event, onNavigate }) {
     const filledRatio = ((event.spotsTotal - event.spotsLeft) / event.spotsTotal) * 100
+
+    const handleTrackClick = () => {
+        if (event.trackSlug) {
+            onNavigate?.('/track')
+        }
+    }
 
     return (
         <article className={`event-card event-card--${event.variant}`}>
@@ -66,7 +73,17 @@ function EventCard({ event }) {
                 <ul className="event-card__meta">
                     <li>
                         <PinIcon />
-                        <span>{event.track}</span>
+                        {event.trackSlug ? (
+                            <button
+                                type="button"
+                                className="event-card__track-link"
+                                onClick={handleTrackClick}
+                            >
+                                {event.track}
+                            </button>
+                        ) : (
+                            <span>{event.track}</span>
+                        )}
                     </li>
                     <li>
                         <UserIcon />
@@ -91,7 +108,11 @@ function EventCard({ event }) {
                     <span className="event-card__price-label">OD</span>
                     <span className="event-card__price-value">{formatEventPrice(event.price)}</span>
                 </div>
-                <button type="button" className={`event-card__book event-card__book--${event.variant}`}>
+                <button
+                    type="button"
+                    className={`event-card__book event-card__book--${event.variant}`}
+                    onClick={() => onNavigate?.(getEventBookPath(event))}
+                >
                     REZERWUJ
                     <ChevronIcon />
                 </button>
@@ -102,7 +123,7 @@ function EventCard({ event }) {
 
 function Events({ onNavigate }) {
     const [category, setCategory] = useState('all')
-    const [period, setPeriod] = useState('nov-dec-2024')
+    const [period, setPeriod] = useState('mar-nov-2026')
 
     const filtered = useMemo(() => {
         return EVENTS.filter((event) => {
@@ -120,14 +141,13 @@ function Events({ onNavigate }) {
                 </div>
                 <div className="events-hero__overlay" aria-hidden="true" />
                 <div className="events-hero__content">
-                    <p className="events-hero__eyebrow">KALENDARZ / 2024</p>
+                    <p className="events-hero__eyebrow">KALENDARZ / 2026</p>
                     <h1 id="events-heading" className="events-hero__title">
-                        KALENDARZ WYDARZEŃ 2024
+                        KALENDARZ WYDARZEŃ 2026
                     </h1>
                     <p className="events-hero__desc">
-                        Zarezerwuj swoje miejsce na sesjach treningowych na prestiżowych torach
-                        europejskich. Profesjonalni instruktorzy, pełna telemetria i flota
-                        supersamochodów klasy GT.
+                        Zarezerwuj miejsce na sesjach na torze APEX Drive w Skawinie i na torach
+                        partnerskich w Polsce. Profesjonalni instruktorzy, telemetria i flota GT.
                     </p>
                 </div>
             </section>
@@ -172,7 +192,7 @@ function Events({ onNavigate }) {
                         <ul className="events-list">
                             {filtered.map((event) => (
                                 <li key={event.id}>
-                                    <EventCard event={event} />
+                                    <EventCard event={event} onNavigate={onNavigate} />
                                 </li>
                             ))}
                         </ul>
@@ -203,7 +223,7 @@ function Events({ onNavigate }) {
                         </button>
                     </div>
                     <div className="events-custom__media" aria-hidden="true">
-                        <img src="/images/cars/porsche-911.jpg" alt="" loading="lazy" />
+                        <img src="/images/cars/lamborghini-huracan-STO.jpg" alt="" loading="lazy" />
                     </div>
                 </div>
             </section>

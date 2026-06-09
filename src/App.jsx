@@ -12,6 +12,7 @@ import Notify from './pages/Notify.jsx'
 import NotFound from './pages/NotFound.jsx'
 import TrackDetail from './pages/TrackDetail.jsx'
 import Events from './pages/Events.jsx'
+import Training from './pages/Training.jsx'
 import './App.css'
 
 import { getCarBySlug } from './data/cars.js'
@@ -72,10 +73,14 @@ function App() {
         <Login onNavigate={navigate} />
       ) : path === '/register' ? (
         <Register onNavigate={navigate} />
+      ) : path === '/kalendarz' ? (
+        <Events onNavigate={navigate} />
       ) : path === '/events' ? (
         <Events onNavigate={navigate} />
+      ) : path === '/szkolenia' ? (
+        <Training onNavigate={navigate} />
       ) : path === '/track' ? (
-        <TrackDetail slug="silesia-ring" onNavigate={navigate} />
+        <TrackDetail slug="apex-drive" onNavigate={navigate} />
       ) : getCarSlug(path) ? (
         getCarBySlug(getCarSlug(path)) ? (
           <CarDetail slug={getCarSlug(path)} onNavigate={navigate} />
