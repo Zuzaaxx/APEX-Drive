@@ -384,7 +384,7 @@ function Start({ onNavigate }) {
                         <button
                             type="button"
                             className="events-intro__calendar"
-                            onClick={() => onNavigate?.('/cars')}
+                            onClick={() => onNavigate?.('/events')}
                         >
                             ZOBACZ PEŁNY KALENDARZ
                             <ArrowIcon />
