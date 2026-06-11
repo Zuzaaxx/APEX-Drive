@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
+import { trackHotjarPageView } from './lib/hotjar.js'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
 import Cars from './pages/Cars.jsx'
@@ -39,6 +40,10 @@ function App() {
 
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
+
+  useEffect(() => {
+    trackHotjarPageView(path)
+  }, [path])
 
   const navigate = (to) => {
     const targetPath = getPathname(to)
