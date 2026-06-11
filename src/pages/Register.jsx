@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { getFirebaseErrorMessage } from '../lib/firebaseErrors.js'
 import './Register.css'
 
 function UserIcon() {
@@ -56,15 +57,44 @@ const FEATURES = [
 ]
 
 function Register({ onNavigate }) {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, loading, registerWithEmail } = useAuth()
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [acceptedTerms, setAcceptedTerms] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
+    const [error, setError] = useState('')
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
+        setError('')
+
+        if (!fullName.trim() || !email.trim() || !password) {
+            setError('Uzupełnij wszystkie wymagane pola.')
+            return
+        }
+
+        if (password !== confirmPassword) {
+            setError('Hasła nie są identyczne.')
+            return
+        }
+
+        if (!acceptedTerms) {
+            setError('Zaakceptuj regulamin i politykę prywatności.')
+            return
+        }
+
+        setSubmitting(true)
+
+        try {
+            await registerWithEmail(email, password, fullName)
+            onNavigate('/')
+        } catch (authError) {
+            setError(getFirebaseErrorMessage(authError, 'Rejestracja nie powiodła się. Spróbuj ponownie.'))
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     const handleAuthSuccess = () => {
@@ -72,10 +102,14 @@ function Register({ onNavigate }) {
     }
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (!loading && isAuthenticated) {
             onNavigate('/')
         }
-    }, [isAuthenticated, onNavigate])
+    }, [loading, isAuthenticated, onNavigate])
+
+    if (loading) {
+        return null
+    }
 
     return (
         <div className="register-page">
@@ -103,6 +137,12 @@ function Register({ onNavigate }) {
                     <AuthDivider />
 
                     <form className="register-form" onSubmit={handleSubmit} noValidate>
+                        {error ? (
+                            <p className="register-form__error" role="alert">
+                                {error}
+                            </p>
+                        ) : null}
+
                         <div className="register-form__field">
                             <label className="register-form__label" htmlFor="register-name">
                                 IMIĘ I NAZWISKO
@@ -203,8 +243,8 @@ function Register({ onNavigate }) {
                             </span>
                         </label>
 
-                        <button type="submit" className="register-form__submit">
-                            ZAŁÓŻ KONTO
+                        <button type="submit" className="register-form__submit" disabled={submitting}>
+                            {submitting ? 'TWORZENIE KONTA...' : 'ZAŁÓŻ KONTO'}
                             <BoltIcon />
                         </button>
 

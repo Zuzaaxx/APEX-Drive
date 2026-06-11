@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import { MOCK_GOOGLE_ACCOUNTS, mockGoogleLogin } from '../lib/googleAuth'
+import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { getFirebaseErrorMessage } from '../lib/firebaseErrors'
 import './GoogleAuthButton.css'
 
 function GoogleIcon() {
@@ -26,139 +26,53 @@ function GoogleIcon() {
     )
 }
 
-function GoogleAccountPicker({ accounts, loading, onSelect, onClose }) {
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                onClose()
-            }
-        }
-
-        document.body.style.overflow = 'hidden'
-        window.addEventListener('keydown', handleKeyDown)
-
-        return () => {
-            document.body.style.overflow = ''
-            window.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [onClose])
-
-    return (
-        <div className="google-picker" role="presentation">
-            <button
-                type="button"
-                className="google-picker__backdrop"
-                onClick={onClose}
-                aria-label="Zamknij wybór konta"
-            />
-            <div
-                className="google-picker__panel"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="google-picker-title"
-            >
-                <header className="google-picker__header">
-                    <span className="google-picker__brand">
-                        <GoogleIcon />
-                        Zaloguj się przez Google
-                    </span>
-                    <h2 id="google-picker-title" className="google-picker__title">
-                        Wybierz konto
-                    </h2>
-                    <p className="google-picker__subtitle">kontynuuj do APEX DRIVE</p>
-                </header>
-
-                <ul className="google-picker__list">
-                    {accounts.map((account) => (
-                        <li key={account.sub}>
-                            <button
-                                type="button"
-                                className="google-picker__account"
-                                onClick={() => onSelect(account)}
-                                disabled={loading}
-                            >
-                                <span
-                                    className="google-picker__avatar"
-                                    style={{ backgroundColor: account.accent }}
-                                    aria-hidden="true"
-                                >
-                                    {account.initials}
-                                </span>
-                                <span className="google-picker__details">
-                                    <span className="google-picker__name">{account.name}</span>
-                                    <span className="google-picker__email">{account.email}</span>
-                                </span>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-
-                {loading ? (
-                    <p className="google-picker__loading" role="status">
-                        Łączenie z kontem Google...
-                    </p>
-                ) : null}
-            </div>
-        </div>
-    )
-}
-
 function GoogleAuthButton({ onSuccess, label = 'KONTYNUUJ Z GOOGLE', className = '' }) {
     const { loginWithGoogle } = useAuth()
-    const [pickerOpen, setPickerOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    const handleAccountSelect = async (account) => {
+    const handleGoogleLogin = async () => {
         setLoading(true)
         setError('')
 
         try {
-            const profile = await mockGoogleLogin(account)
-            loginWithGoogle(profile)
-            setPickerOpen(false)
+            await loginWithGoogle()
             onSuccess?.()
-        } catch {
-            setError('Logowanie przez Google nie powiodło się. Spróbuj ponownie.')
+        } catch (authError) {
+            if (authError?.code === 'auth/popup-closed-by-user') {
+                return
+            }
+
+            setError(
+                getFirebaseErrorMessage(
+                    authError,
+                    'Logowanie przez Google nie powiodło się. Spróbuj ponownie.',
+                ),
+            )
         } finally {
             setLoading(false)
         }
     }
 
     return (
-        <>
-            <div className={`google-auth ${className}`.trim()}>
-                <button
-                    type="button"
-                    className="google-auth__button"
-                    onClick={() => setPickerOpen(true)}
-                    disabled={loading}
-                >
-                    <span className="google-auth__icon" aria-hidden="true">
-                        <GoogleIcon />
-                    </span>
-                    {loading ? 'ŁĄCZENIE...' : label}
-                </button>
-                {error ? (
-                    <p className="google-auth__error" role="alert">
-                        {error}
-                    </p>
-                ) : null}
-            </div>
-
-            {pickerOpen ? (
-                <GoogleAccountPicker
-                    accounts={MOCK_GOOGLE_ACCOUNTS}
-                    loading={loading}
-                    onSelect={handleAccountSelect}
-                    onClose={() => {
-                        if (!loading) {
-                            setPickerOpen(false)
-                        }
-                    }}
-                />
+        <div className={`google-auth ${className}`.trim()}>
+            <button
+                type="button"
+                className="google-auth__button"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+            >
+                <span className="google-auth__icon" aria-hidden="true">
+                    <GoogleIcon />
+                </span>
+                {loading ? 'ŁĄCZENIE...' : label}
+            </button>
+            {error ? (
+                <p className="google-auth__error" role="alert">
+                    {error}
+                </p>
             ) : null}
-        </>
+        </div>
     )
 }
 
