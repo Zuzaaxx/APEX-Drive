@@ -14,7 +14,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null
+const measurementId =
+    typeof import.meta.env.VITE_FIREBASE_MEASUREMENT_ID === 'string'
+        ? import.meta.env.VITE_FIREBASE_MEASUREMENT_ID.trim()
+        : ''
+
+export const analytics =
+    typeof window !== 'undefined' && measurementId ? getAnalytics(app) : null
 export const auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 

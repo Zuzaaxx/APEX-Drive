@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
+import { trackGoogleAnalyticsPageView } from './lib/googleAnalytics.js'
 import { trackHotjarPageView } from './lib/hotjar.js'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
@@ -47,6 +48,7 @@ function getTrainingSlug(path) {
 
 function App() {
   const [path, setPath] = useState(getCurrentPath)
+  const isInitialPageView = useRef(true)
 
   useEffect(() => {
     const handlePopState = () => {
@@ -63,6 +65,12 @@ function App() {
   }, [path])
 
   useEffect(() => {
+    if (isInitialPageView.current) {
+      isInitialPageView.current = false
+    } else {
+      trackGoogleAnalyticsPageView(path)
+    }
+
     trackHotjarPageView(path)
   }, [path])
 
