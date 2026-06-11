@@ -185,6 +185,19 @@
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   object-fit: cover;
+  flex-shrink: 0;
+}
+
+.navbar__avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #be0000, #8a0000);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  object-fit: unset;
 }
 
 .navbar__user--mobile .navbar__avatar {

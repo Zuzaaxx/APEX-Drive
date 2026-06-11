@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
+import { getUserInitials } from '../lib/userProfile.js'
 import './Navbar.css'
 
 export const DEFAULT_NAV_ITEMS = [
@@ -23,6 +24,43 @@ function UserIcon() {
             <path d="M5 20c0-4 3.5-6 7-6s7 2 7 6" strokeLinecap="round" />
         </svg>
     )
+}
+
+function UserAvatar({ name, picture, size = 32 }) {
+    const [imageError, setImageError] = useState(false)
+    const initials = getUserInitials(name)
+
+    useEffect(() => {
+        setImageError(false)
+    }, [picture])
+
+    if (picture && !imageError) {
+        return (
+            <img
+                className="navbar__avatar"
+                src={picture}
+                alt=""
+                width={size}
+                height={size}
+                referrerPolicy="no-referrer"
+                onError={() => setImageError(true)}
+            />
+        )
+    }
+
+    if (initials) {
+        return (
+            <span
+                className="navbar__avatar navbar__avatar--initials"
+                style={{ width: size, height: size }}
+                aria-hidden="true"
+            >
+                {initials}
+            </span>
+        )
+    }
+
+    return <UserIcon />
 }
 
 function MenuIcon({ open }) {
@@ -172,17 +210,7 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                             onClick={handleAccountClick}
                             aria-current={currentPath === '/account' ? 'page' : undefined}
                         >
-                            {user.picture ? (
-                                <img
-                                    className="navbar__avatar"
-                                    src={user.picture}
-                                    alt=""
-                                    width={32}
-                                    height={32}
-                                />
-                            ) : (
-                                <UserIcon />
-                            )}
+                            <UserAvatar name={user.name} picture={user.picture} />
                             <span className="navbar__user-name">{user.name}</span>
                         </button>
                         <button
@@ -258,17 +286,7 @@ function Navbar({ onNavigate, navItems = DEFAULT_NAV_ITEMS, currentPath = '/' })
                                 onClick={handleAccountClick}
                                 aria-current={currentPath === '/account' ? 'page' : undefined}
                             >
-                                {user.picture ? (
-                                    <img
-                                        className="navbar__avatar"
-                                        src={user.picture}
-                                        alt=""
-                                        width={36}
-                                        height={36}
-                                    />
-                                ) : (
-                                    <UserIcon />
-                                )}
+                                <UserAvatar name={user.name} picture={user.picture} size={36} />
                                 <span className="navbar__user-name">{user.name}</span>
                             </button>
                             <button

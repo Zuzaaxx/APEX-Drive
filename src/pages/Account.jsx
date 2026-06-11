@@ -65,7 +65,7 @@ function getFirstName(fullName) {
 }
 
 function Account({ onNavigate }) {
-    const { user, isAuthenticated, updateProfile } = useAuth()
+    const { user, isAuthenticated, loading, updateProfile } = useAuth()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -74,10 +74,10 @@ function Account({ onNavigate }) {
     const [saveMessage, setSaveMessage] = useState('')
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!loading && !isAuthenticated) {
             onNavigate('/login')
         }
-    }, [isAuthenticated, onNavigate])
+    }, [loading, isAuthenticated, onNavigate])
 
     useEffect(() => {
         if (!user) return
@@ -89,21 +89,27 @@ function Account({ onNavigate }) {
 
     const firstName = useMemo(() => getFirstName(user?.name), [user?.name])
 
-    const handleProfileSubmit = (event) => {
+    const handleProfileSubmit = async (event) => {
         event.preventDefault()
-        updateProfile({
-            name: name.trim() || user.name,
-            email: email.trim() || user.email,
-            preferences: {
-                emailNotifications,
-                smsNotifications,
-            },
-        })
-        setSaveMessage('Profil zaktualizowany.')
-        window.setTimeout(() => setSaveMessage(''), 3000)
+
+        try {
+            await updateProfile({
+                name: name.trim() || user.name,
+                email: email.trim() || user.email,
+                preferences: {
+                    emailNotifications,
+                    smsNotifications,
+                },
+            })
+            setSaveMessage('Profil zaktualizowany.')
+            window.setTimeout(() => setSaveMessage(''), 3000)
+        } catch {
+            setSaveMessage('Nie udało się zaktualizować profilu.')
+            window.setTimeout(() => setSaveMessage(''), 3000)
+        }
     }
 
-    if (!isAuthenticated || !user) {
+    if (loading || !isAuthenticated || !user) {
         return null
     }
 
