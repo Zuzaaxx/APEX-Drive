@@ -11,11 +11,23 @@ const NOTIFY_META = {
     'mclaren-720s': { code: '720S', waitlist: 27, eta: '36–60h' },
 }
 
+const MAX_WAITLIST = Math.max(...Object.values(NOTIFY_META).map((meta) => meta.waitlist))
+
+const DEMAND_SEGMENT_COUNT = 4
+
+function getDemandPercent(waitlist) {
+    if (MAX_WAITLIST <= 0) {
+        return 0
+    }
+    return Math.round((waitlist / MAX_WAITLIST) * 100)
+}
+
 const NOTIFY_CARS = CARS.map((car) => ({
     id: car.slug,
     name: car.name,
     image: car.image,
     ...NOTIFY_META[car.slug],
+    demandPercent: getDemandPercent(NOTIFY_META[car.slug].waitlist),
 }))
 
 const DATE_PREFS = [
@@ -52,6 +64,46 @@ function getWaitlistLabel(count) {
     }
 
     return { noun: 'osób', verb: 'oczekuje' }
+}
+
+function getDemandBarSegments(percent) {
+    const clamped = Math.max(0, Math.min(100, percent))
+    const segmentSize = 100 / DEMAND_SEGMENT_COUNT
+
+    return Array.from({ length: DEMAND_SEGMENT_COUNT }, (_, index) => {
+        const start = index * segmentSize
+        const end = start + segmentSize
+
+        if (clamped >= end) {
+            return 100
+        }
+        if (clamped <= start) {
+            return 0
+        }
+        return ((clamped - start) / segmentSize) * 100
+    })
+}
+
+function getDemandLevel(percent) {
+    if (percent >= 85) {
+        return { label: 'WYSOKIE ZAPOTRZEBOWANIE', modifier: 'high' }
+    }
+    if (percent >= 60) {
+        return { label: 'UMIARKOWANE ZAPOTRZEBOWANIE', modifier: 'medium' }
+    }
+    return { label: 'NISKIE ZAPOTRZEBOWANIE', modifier: 'low' }
+}
+
+function getDemandSegmentStyle(fill) {
+    if (fill >= 100) {
+        return { background: 'var(--n-red)' }
+    }
+    if (fill <= 0) {
+        return undefined
+    }
+    return {
+        background: `linear-gradient(90deg, var(--n-red) ${fill}%, #2a2a2a ${fill}%)`,
+    }
 }
 
 function InfoIcon() {
@@ -132,6 +184,16 @@ function Notify({ onNavigate }) {
         [activeCar.waitlist],
     )
 
+    const demandLevel = useMemo(
+        () => getDemandLevel(activeCar.demandPercent),
+        [activeCar.demandPercent],
+    )
+
+    const demandSegments = useMemo(
+        () => getDemandBarSegments(activeCar.demandPercent),
+        [activeCar.demandPercent],
+    )
+
     const scrollToCarIndex = (index) => {
         const carousel = carouselRef.current
         if (!carousel) return
@@ -159,8 +221,6 @@ function Notify({ onNavigate }) {
     useEffect(() => {
         scrollToCarIndex(selectedIndex)
     }, [])
-
-    const demandPercent = 98
 
     const toggleDatePref = (id) => {
         setDatePrefs((prev) =>
@@ -411,13 +471,27 @@ function Notify({ onNavigate }) {
                         <div className="notify-page__panel notify-page__panel--feed">
                             <div className="notify-page__feed-head">
                                 <span className="notify-page__feed-label">DOSTĘPNOŚĆ NA ŻYWO</span>
-                                <span className="notify-page__feed-demand">{demandPercent}% WYSOKIE ZAPOTRZEBOWANIE</span>
+                                <span
+                                    className={`notify-page__feed-demand notify-page__feed-demand--${demandLevel.modifier}`}
+                                >
+                                    {activeCar.demandPercent}% {demandLevel.label}
+                                </span>
                             </div>
-                            <div className="notify-page__feed-bar" aria-hidden="true">
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--partial" />
+                            <div
+                                className="notify-page__feed-bar"
+                                role="progressbar"
+                                aria-valuenow={activeCar.demandPercent}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                aria-label={`Zapotrzebowanie na ${activeCar.name}: ${activeCar.demandPercent}%`}
+                            >
+                                {demandSegments.map((fill, index) => (
+                                    <span
+                                        key={index}
+                                        className="notify-page__feed-segment"
+                                        style={getDemandSegmentStyle(fill)}
+                                    />
+                                ))}
                             </div>
                             <p className="notify-page__feed-status">
                                 Aktualnie{' '}
