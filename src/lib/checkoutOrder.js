@@ -1,3 +1,5 @@
+import { setAuthRedirect } from './authRedirect.js'
+
 export const ORDER_STORAGE_KEY = 'apex-checkout-order'
 export const CONFIRMATION_STORAGE_KEY = 'apex-confirmation'
 export const TRACK_VENUE = 'TOR KRAKÓW, WYŚCIGOWA 3'
@@ -65,6 +67,18 @@ export function readCheckoutOrder() {
 export function goToCheckout(order, onNavigate) {
     saveCheckoutOrder(order)
     onNavigate('/checkout')
+}
+
+export function goToCheckoutWithAuth(order, onNavigate, isAuthenticated) {
+    saveCheckoutOrder(order)
+
+    if (isAuthenticated) {
+        onNavigate('/checkout')
+        return
+    }
+
+    setAuthRedirect('/checkout')
+    onNavigate('/login')
 }
 
 /** Obsługa starszego formatu zapisu (wynajem auta). */

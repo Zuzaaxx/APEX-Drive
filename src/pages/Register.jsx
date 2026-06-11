@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { completeAuthRedirect } from '../lib/authRedirect.js'
 import { getFirebaseErrorMessage } from '../lib/firebaseErrors.js'
 import './Register.css'
 
@@ -89,7 +90,7 @@ function Register({ onNavigate }) {
 
         try {
             await registerWithEmail(email, password, fullName)
-            onNavigate('/')
+            completeAuthRedirect(onNavigate, '/')
         } catch (authError) {
             setError(getFirebaseErrorMessage(authError, 'Rejestracja nie powiodła się. Spróbuj ponownie.'))
         } finally {
@@ -98,12 +99,12 @@ function Register({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/')
+        completeAuthRedirect(onNavigate, '/')
     }
 
     useEffect(() => {
         if (!loading && isAuthenticated) {
-            onNavigate('/')
+            completeAuthRedirect(onNavigate, '/')
         }
     }, [loading, isAuthenticated, onNavigate])
 

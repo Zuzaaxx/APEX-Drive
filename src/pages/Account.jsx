@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { setAuthRedirect } from '../lib/authRedirect.js'
 import './Account.css'
 
 const LAP_BARS = [
@@ -75,6 +76,7 @@ function Account({ onNavigate }) {
 
     useEffect(() => {
         if (!loading && !isAuthenticated) {
+            setAuthRedirect('/account')
             onNavigate('/login')
         }
     }, [loading, isAuthenticated, onNavigate])

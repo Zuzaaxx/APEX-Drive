@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { completeAuthRedirect } from '../lib/authRedirect.js'
 import { getFirebaseErrorMessage } from '../lib/firebaseErrors.js'
 import './Login.css'
 
@@ -51,7 +52,7 @@ function Login({ onNavigate }) {
 
         try {
             await loginWithEmail(email, password)
-            onNavigate('/account')
+            completeAuthRedirect(onNavigate)
         } catch (authError) {
             setError(getFirebaseErrorMessage(authError, 'Logowanie nie powiodło się. Spróbuj ponownie.'))
         } finally {
@@ -64,12 +65,12 @@ function Login({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/account')
+        completeAuthRedirect(onNavigate)
     }
 
     useEffect(() => {
         if (!loading && isAuthenticated) {
-            onNavigate('/account')
+            completeAuthRedirect(onNavigate)
         }
     }, [loading, isAuthenticated, onNavigate])
 
