@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import { trackGoogleAnalyticsPageView } from './lib/googleAnalytics.js'
 import { trackHotjarPageView } from './lib/hotjar.js'
+import { getPageTitle } from './lib/pageTitle.js'
 import Start from './pages/Start.jsx'
 import Login from './pages/Login.jsx'
 import Cars from './pages/Cars.jsx'
@@ -65,6 +66,8 @@ function App() {
   }, [path])
 
   useEffect(() => {
+    document.title = getPageTitle(path)
+
     if (isInitialPageView.current) {
       isInitialPageView.current = false
     } else {
