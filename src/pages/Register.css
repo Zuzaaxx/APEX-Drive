@@ -139,6 +139,15 @@
 
 /* Formularz */
 
+.register-form__error {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #ff8a8a;
+  text-align: center;
+}
+
 .register-form {
   display: grid;
   gap: 22px;

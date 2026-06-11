@@ -3,7 +3,8 @@ import { getCarBySlug } from '../data/cars.js'
 import BookingCalendar from '../components/BookingCalendar.jsx'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
-import { buildCarCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
+import { useAuth } from '../context/AuthContext.jsx'
+import { buildCarCheckoutOrder, goToCheckoutWithAuth } from '../lib/checkoutOrder.js'
 import './CarDetail.css'
 
 const WAVE_HEIGHTS = [4, 8, 12, 6, 16, 10, 20, 14, 8, 18, 12, 22, 16, 10, 24, 18, 12, 8, 14, 20, 10, 6, 12, 16]
@@ -14,10 +15,10 @@ const MONTHS = [
 ]
 
 const NOTIFY_CAR_BY_SLUG = {
-    'porsche-911-gt3-rs': '911-gt3',
-    'lamborghini-sto': 'gr-yaris',
-    'mclaren-720s': 'm3-comp',
-    'ferrari-sf90-stradale': 'm3-comp',
+    'porsche-911-gt3-rs': 'porsche-911-gt3-rs',
+    'ferrari-sf90-stradale': 'ferrari-sf90-stradale',
+    'lamborghini-sto': 'lamborghini-sto',
+    'mclaren-720s': 'mclaren-720s',
 }
 
 function getNotifyPath(slug) {
@@ -74,6 +75,7 @@ function buildLineItems(pricing, trackPackage, driveVideo) {
 }
 
 function CarDetail({ slug, onNavigate }) {
+    const { isAuthenticated } = useAuth()
     const car = getCarBySlug(slug)
     const [activeImage, setActiveImage] = useState(0)
     const [selectedDays, setSelectedDays] = useState([3, 4])
@@ -110,7 +112,7 @@ function CarDetail({ slug, onNavigate }) {
     const handleReserve = () => {
         if (!pricing || !onNavigate) return
 
-        goToCheckout(
+        goToCheckoutWithAuth(
             buildCarCheckoutOrder({
                 car,
                 selectedDays,
@@ -121,6 +123,7 @@ function CarDetail({ slug, onNavigate }) {
                 buildLineItems,
             }),
             onNavigate,
+            isAuthenticated,
         )
     }
 

@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import {
     getTrainingInstructorById,
     getTrainingProgramById,
 } from '../data/trainingPrograms.js'
-import { buildTrainingCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
+import { buildTrainingCheckoutOrder, goToCheckoutWithAuth } from '../lib/checkoutOrder.js'
 import './TrainingDetail.css'
 
 const WEEKDAYS = ['PN', 'WT', 'ŚR', 'CZ', 'PT', 'SB', 'ND']
@@ -115,6 +116,7 @@ function Calendar({ selectedDay, unavailableDays, onSelectDay }) {
 }
 
 function TrainingDetail({ slug, onNavigate }) {
+    const { isAuthenticated } = useAuth()
     const program = getTrainingProgramById(slug)
     const instructor = program ? getTrainingInstructorById(program.instructorId) : null
     const [selectedDay, setSelectedDay] = useState(12)
@@ -145,13 +147,14 @@ function TrainingDetail({ slug, onNavigate }) {
     const sessionDate = formatSessionDate(selectedDay)
 
     const handleReserve = () => {
-        goToCheckout(
+        goToCheckoutWithAuth(
             buildTrainingCheckoutOrder({
                 program,
                 instructor,
                 sessionDate,
             }),
             onNavigate,
+            isAuthenticated,
         )
     }
 

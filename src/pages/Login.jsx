@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import GoogleAuthButton, { AuthDivider } from '../components/GoogleAuthButton.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { completeAuthRedirect } from '../lib/authRedirect.js'
+import { getFirebaseErrorMessage } from '../lib/firebaseErrors.js'
 import './Login.css'
 
 function KeyIcon() {
@@ -31,12 +33,31 @@ function GuestIcon() {
 }
 
 function Login({ onNavigate }) {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, loading, loginWithEmail } = useAuth()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [submitting, setSubmitting] = useState(false)
+    const [error, setError] = useState('')
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
+        setError('')
+
+        if (!email.trim() || !password) {
+            setError('Podaj adres e-mail i hasło.')
+            return
+        }
+
+        setSubmitting(true)
+
+        try {
+            await loginWithEmail(email, password)
+            completeAuthRedirect(onNavigate)
+        } catch (authError) {
+            setError(getFirebaseErrorMessage(authError, 'Logowanie nie powiodło się. Spróbuj ponownie.'))
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     const handleGuest = () => {
@@ -44,14 +65,18 @@ function Login({ onNavigate }) {
     }
 
     const handleAuthSuccess = () => {
-        onNavigate('/account')
+        completeAuthRedirect(onNavigate)
     }
 
     useEffect(() => {
-        if (isAuthenticated) {
-            onNavigate('/account')
+        if (!loading && isAuthenticated) {
+            completeAuthRedirect(onNavigate)
         }
-    }, [isAuthenticated, onNavigate])
+    }, [loading, isAuthenticated, onNavigate])
+
+    if (loading) {
+        return null
+    }
 
     return (
         <div className="login-page">
@@ -101,6 +126,12 @@ function Login({ onNavigate }) {
                             <AuthDivider />
 
                             <form className="login-form" onSubmit={handleSubmit} noValidate>
+                                {error ? (
+                                    <p className="login-form__error" role="alert">
+                                        {error}
+                                    </p>
+                                ) : null}
+
                                 <div className="login-form__field">
                                     <label className="login-form__label" htmlFor="driver-email">
                                         EMAIL
@@ -138,8 +169,8 @@ function Login({ onNavigate }) {
                                     />
                                 </div>
 
-                                <button type="submit" className="login-form__submit">
-                                    ZALOGUJ
+                                <button type="submit" className="login-form__submit" disabled={submitting}>
+                                    {submitting ? 'LOGOWANIE...' : 'ZALOGUJ'}
                                     <BoltIcon />
                                 </button>
 

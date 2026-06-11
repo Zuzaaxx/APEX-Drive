@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { setAuthRedirect } from '../lib/authRedirect.js'
 import './Account.css'
 
 const LAP_BARS = [
@@ -65,7 +66,7 @@ function getFirstName(fullName) {
 }
 
 function Account({ onNavigate }) {
-    const { user, isAuthenticated, updateProfile } = useAuth()
+    const { user, isAuthenticated, loading, updateProfile } = useAuth()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -74,10 +75,11 @@ function Account({ onNavigate }) {
     const [saveMessage, setSaveMessage] = useState('')
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!loading && !isAuthenticated) {
+            setAuthRedirect('/account')
             onNavigate('/login')
         }
-    }, [isAuthenticated, onNavigate])
+    }, [loading, isAuthenticated, onNavigate])
 
     useEffect(() => {
         if (!user) return
@@ -89,21 +91,27 @@ function Account({ onNavigate }) {
 
     const firstName = useMemo(() => getFirstName(user?.name), [user?.name])
 
-    const handleProfileSubmit = (event) => {
+    const handleProfileSubmit = async (event) => {
         event.preventDefault()
-        updateProfile({
-            name: name.trim() || user.name,
-            email: email.trim() || user.email,
-            preferences: {
-                emailNotifications,
-                smsNotifications,
-            },
-        })
-        setSaveMessage('Profil zaktualizowany.')
-        window.setTimeout(() => setSaveMessage(''), 3000)
+
+        try {
+            await updateProfile({
+                name: name.trim() || user.name,
+                email: email.trim() || user.email,
+                preferences: {
+                    emailNotifications,
+                    smsNotifications,
+                },
+            })
+            setSaveMessage('Profil zaktualizowany.')
+            window.setTimeout(() => setSaveMessage(''), 3000)
+        } catch {
+            setSaveMessage('Nie udało się zaktualizować profilu.')
+            window.setTimeout(() => setSaveMessage(''), 3000)
+        }
     }
 
-    if (!isAuthenticated || !user) {
+    if (loading || !isAuthenticated || !user) {
         return null
     }
 

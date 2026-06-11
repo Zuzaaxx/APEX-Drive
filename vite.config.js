@@ -1,7 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
-// https://vite.dev/config/
+const useHttps = process.env.VITE_DEV_HTTPS === 'true'
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: useHttps ? [react(), basicSsl()] : [react()],
+  server: {
+    port: 5173,
+    strictPort: false,
+    ...(useHttps ? { https: true } : {}),
+  },
+  preview: {
+    port: 4173,
+    strictPort: false,
+    ...(useHttps ? { https: true } : {}),
+  },
 })

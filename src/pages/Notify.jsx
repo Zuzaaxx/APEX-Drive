@@ -1,34 +1,34 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { CARS } from '../data/cars.js'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import './Notify.css'
 
-const NOTIFY_CARS = [
-    {
-        id: 'gr-yaris',
-        name: 'TOYOTA GR YARIS',
-        code: 'GR_YARIS',
-        image: '/images/cars/mclaren-720s.jpg',
-        waitlist: 18,
-        eta: '24–48h',
-    },
-    {
-        id: '911-gt3',
-        name: 'PORSCHE 911 GT3',
-        code: '911_GT3',
-        image: '/images/cars/porsche-911.jpg',
-        waitlist: 42,
-        eta: '48–72h',
-    },
-    {
-        id: 'm3-comp',
-        name: 'BMW M3 COMP.',
-        code: 'M3_COMP',
-        image: '/images/cars/ferrari-f8.jpg',
-        waitlist: 27,
-        eta: '36–60h',
-    },
-]
+const NOTIFY_META = {
+    'porsche-911-gt3-rs': { code: '911_GT3_RS', waitlist: 42, eta: '48–72h' },
+    'ferrari-sf90-stradale': { code: 'SF90', waitlist: 31, eta: '36–60h' },
+    'lamborghini-sto': { code: 'STO', waitlist: 24, eta: '24–48h' },
+    'mclaren-720s': { code: '720S', waitlist: 27, eta: '36–60h' },
+}
+
+const MAX_WAITLIST = Math.max(...Object.values(NOTIFY_META).map((meta) => meta.waitlist))
+
+const DEMAND_SEGMENT_COUNT = 4
+
+function getDemandPercent(waitlist) {
+    if (MAX_WAITLIST <= 0) {
+        return 0
+    }
+    return Math.round((waitlist / MAX_WAITLIST) * 100)
+}
+
+const NOTIFY_CARS = CARS.map((car) => ({
+    id: car.slug,
+    name: car.name,
+    image: car.image,
+    ...NOTIFY_META[car.slug],
+    demandPercent: getDemandPercent(NOTIFY_META[car.slug].waitlist),
+}))
 
 const DATE_PREFS = [
     { id: 'weekdays', label: 'DNI ROBOCZE' },
@@ -41,13 +41,69 @@ function getInitialCarId() {
     if (carParam && NOTIFY_CARS.some((car) => car.id === carParam)) {
         return carParam
     }
-    return '911-gt3'
+    return NOTIFY_CARS[0]?.id ?? 'porsche-911-gt3-rs'
 }
 
 function isValidEmail(value) {
     const trimmed = value.trim()
     if (!trimmed) return false
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)
+}
+
+function getWaitlistLabel(count) {
+    const abs = Math.abs(count)
+    const mod10 = abs % 10
+    const mod100 = abs % 100
+
+    if (abs === 1) {
+        return { noun: 'osoba', verb: 'oczekuje' }
+    }
+
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+        return { noun: 'osoby', verb: 'oczekują' }
+    }
+
+    return { noun: 'osób', verb: 'oczekuje' }
+}
+
+function getDemandBarSegments(percent) {
+    const clamped = Math.max(0, Math.min(100, percent))
+    const segmentSize = 100 / DEMAND_SEGMENT_COUNT
+
+    return Array.from({ length: DEMAND_SEGMENT_COUNT }, (_, index) => {
+        const start = index * segmentSize
+        const end = start + segmentSize
+
+        if (clamped >= end) {
+            return 100
+        }
+        if (clamped <= start) {
+            return 0
+        }
+        return ((clamped - start) / segmentSize) * 100
+    })
+}
+
+function getDemandLevel(percent) {
+    if (percent >= 85) {
+        return { label: 'WYSOKIE ZAPOTRZEBOWANIE', modifier: 'high' }
+    }
+    if (percent >= 60) {
+        return { label: 'UMIARKOWANE ZAPOTRZEBOWANIE', modifier: 'medium' }
+    }
+    return { label: 'NISKIE ZAPOTRZEBOWANIE', modifier: 'low' }
+}
+
+function getDemandSegmentStyle(fill) {
+    if (fill >= 100) {
+        return { background: 'var(--n-red)' }
+    }
+    if (fill <= 0) {
+        return undefined
+    }
+    return {
+        background: `linear-gradient(90deg, var(--n-red) ${fill}%, #2a2a2a ${fill}%)`,
+    }
 }
 
 function InfoIcon() {
@@ -87,7 +143,24 @@ function CheckIcon() {
     )
 }
 
+function ChevronLeftIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+function ChevronRightIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
 function Notify({ onNavigate }) {
+    const carouselRef = useRef(null)
     const [email, setEmail] = useState('')
     const [selectedCar, setSelectedCar] = useState(getInitialCarId)
     const [datePrefs, setDatePrefs] = useState(['weekend'])
@@ -96,12 +169,58 @@ function Notify({ onNavigate }) {
     const [submitted, setSubmitted] = useState(false)
     const [codeChecked, setCodeChecked] = useState(false)
 
-    const activeCar = useMemo(
-        () => NOTIFY_CARS.find((car) => car.id === selectedCar) ?? NOTIFY_CARS[1],
+    const selectedIndex = useMemo(
+        () => Math.max(0, NOTIFY_CARS.findIndex((car) => car.id === selectedCar)),
         [selectedCar],
     )
 
-    const demandPercent = 98
+    const activeCar = useMemo(
+        () => NOTIFY_CARS[selectedIndex] ?? NOTIFY_CARS[0],
+        [selectedIndex],
+    )
+
+    const waitlistLabel = useMemo(
+        () => getWaitlistLabel(activeCar.waitlist),
+        [activeCar.waitlist],
+    )
+
+    const demandLevel = useMemo(
+        () => getDemandLevel(activeCar.demandPercent),
+        [activeCar.demandPercent],
+    )
+
+    const demandSegments = useMemo(
+        () => getDemandBarSegments(activeCar.demandPercent),
+        [activeCar.demandPercent],
+    )
+
+    const scrollToCarIndex = (index) => {
+        const carousel = carouselRef.current
+        if (!carousel) return
+        const card = carousel.children[index]
+        card?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    }
+
+    const selectCarByIndex = (index) => {
+        const car = NOTIFY_CARS[index]
+        if (!car) return
+        setSelectedCar(car.id)
+        scrollToCarIndex(index)
+    }
+
+    const goToPrevCar = () => {
+        const nextIndex = (selectedIndex - 1 + NOTIFY_CARS.length) % NOTIFY_CARS.length
+        selectCarByIndex(nextIndex)
+    }
+
+    const goToNextCar = () => {
+        const nextIndex = (selectedIndex + 1) % NOTIFY_CARS.length
+        selectCarByIndex(nextIndex)
+    }
+
+    useEffect(() => {
+        scrollToCarIndex(selectedIndex)
+    }, [])
 
     const toggleDatePref = (id) => {
         setDatePrefs((prev) =>
@@ -187,33 +306,75 @@ function Notify({ onNavigate }) {
 
                         <div className="notify-page__step">
                             <span className="notify-page__step-label">02 // WYBÓR MASZYNY</span>
-                            <div className="notify-page__cars" role="radiogroup" aria-label="Wybór maszyny">
-                                {NOTIFY_CARS.map((car) => {
-                                    const isActive = selectedCar === car.id
-                                    return (
-                                        <button
-                                            key={car.id}
-                                            type="button"
-                                            role="radio"
-                                            aria-checked={isActive}
-                                            className={`notify-page__car${isActive ? ' notify-page__car--active' : ''}`}
-                                            onClick={() => setSelectedCar(car.id)}
-                                        >
-                                            <span className="notify-page__car-image">
-                                                <img src={car.image} alt="" loading="lazy" />
-                                            </span>
-                                            <span className="notify-page__car-info">
-                                                <span className="notify-page__car-name">{car.name}</span>
-                                                <span className="notify-page__car-code">{car.code}</span>
-                                            </span>
-                                            {isActive && (
-                                                <span className="notify-page__car-check" aria-hidden="true">
-                                                    <CheckIcon />
-                                                </span>
-                                            )}
-                                        </button>
-                                    )
-                                })}
+                            <div className="notify-page__carousel">
+                                <button
+                                    type="button"
+                                    className="notify-page__carousel-btn notify-page__carousel-btn--prev"
+                                    onClick={goToPrevCar}
+                                    aria-label="Poprzedni samochód"
+                                >
+                                    <ChevronLeftIcon />
+                                </button>
+                                <div className="notify-page__carousel-viewport">
+                                    <div
+                                        ref={carouselRef}
+                                        className="notify-page__cars"
+                                        role="radiogroup"
+                                        aria-label="Wybór maszyny"
+                                    >
+                                        {NOTIFY_CARS.map((car, index) => {
+                                            const isActive = selectedCar === car.id
+                                            return (
+                                                <button
+                                                    key={car.id}
+                                                    type="button"
+                                                    role="radio"
+                                                    aria-checked={isActive}
+                                                    className={`notify-page__car${isActive ? ' notify-page__car--active' : ''}`}
+                                                    onClick={() => selectCarByIndex(index)}
+                                                >
+                                                    <span className="notify-page__car-image">
+                                                        <img
+                                                            src={car.image}
+                                                            alt={car.name}
+                                                            loading="lazy"
+                                                        />
+                                                    </span>
+                                                    <span className="notify-page__car-info">
+                                                        <span className="notify-page__car-name">{car.name}</span>
+                                                        <span className="notify-page__car-code">{car.code}</span>
+                                                    </span>
+                                                    {isActive && (
+                                                        <span className="notify-page__car-check" aria-hidden="true">
+                                                            <CheckIcon />
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="notify-page__carousel-btn notify-page__carousel-btn--next"
+                                    onClick={goToNextCar}
+                                    aria-label="Następny samochód"
+                                >
+                                    <ChevronRightIcon />
+                                </button>
+                            </div>
+                            <div className="notify-page__carousel-dots" role="tablist" aria-label="Nawigacja karuzeli">
+                                {NOTIFY_CARS.map((car, index) => (
+                                    <button
+                                        key={car.id}
+                                        type="button"
+                                        role="tab"
+                                        className={`notify-page__carousel-dot${index === selectedIndex ? ' notify-page__carousel-dot--active' : ''}`}
+                                        aria-label={car.name}
+                                        aria-selected={index === selectedIndex}
+                                        onClick={() => selectCarByIndex(index)}
+                                    />
+                                ))}
                             </div>
                         </div>
 
@@ -310,17 +471,34 @@ function Notify({ onNavigate }) {
                         <div className="notify-page__panel notify-page__panel--feed">
                             <div className="notify-page__feed-head">
                                 <span className="notify-page__feed-label">DOSTĘPNOŚĆ NA ŻYWO</span>
-                                <span className="notify-page__feed-demand">{demandPercent}% WYSOKIE ZAPOTRZEBOWANIE</span>
+                                <span
+                                    className={`notify-page__feed-demand notify-page__feed-demand--${demandLevel.modifier}`}
+                                >
+                                    {activeCar.demandPercent}% {demandLevel.label}
+                                </span>
                             </div>
-                            <div className="notify-page__feed-bar" aria-hidden="true">
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--full" />
-                                <span className="notify-page__feed-segment notify-page__feed-segment--partial" />
+                            <div
+                                className="notify-page__feed-bar"
+                                role="progressbar"
+                                aria-valuenow={activeCar.demandPercent}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                aria-label={`Zapotrzebowanie na ${activeCar.name}: ${activeCar.demandPercent}%`}
+                            >
+                                {demandSegments.map((fill, index) => (
+                                    <span
+                                        key={index}
+                                        className="notify-page__feed-segment"
+                                        style={getDemandSegmentStyle(fill)}
+                                    />
+                                ))}
                             </div>
                             <p className="notify-page__feed-status">
-                                Aktualnie <strong>{activeCar.waitlist} osób</strong> oczekuje na{' '}
-                                {activeCar.name}. Przewidywany czas powiadomienia:{' '}
+                                Aktualnie{' '}
+                                <strong>
+                                    {activeCar.waitlist} {waitlistLabel.noun}
+                                </strong>{' '}
+                                {waitlistLabel.verb} na {activeCar.name}. Przewidywany czas powiadomienia:{' '}
                                 <strong>{activeCar.eta}</strong>.
                             </p>
                         </div>
@@ -330,8 +508,8 @@ function Notify({ onNavigate }) {
                 <section className="notify-page__banner" aria-label="Nadchodzące modele">
                     <img
                         className="notify-page__banner-img"
-                        src="/images/cars/porsche-911.jpg"
-                        alt="Porsche 911 — widok z tyłu"
+                        src={activeCar.image}
+                        alt={activeCar.name}
                         loading="lazy"
                     />
                     <div className="notify-page__banner-overlay" />
