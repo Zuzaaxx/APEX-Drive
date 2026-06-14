@@ -240,7 +240,9 @@ Nagrania obejmują nawigację po trasach SPA (`/about`, `/login`, `/vouchers`, `
 
 Pełna ścieżka użytkownika: flota → szczegóły auta → konto → szkolenia → checkout → potwierdzenie.
 
-![Odtwarzacz nagrania — widok mobile](docs/Zrzut%20ekranu%202026-06-14%20121051.png)
+![Odtwarzacz nagrania — sesja mobile (iOS, Polska)](docs/Zrzut%20ekranu%202026-06-14%20125658.png)
+
+Nagranie sesji 22 s — nawigacja po `/bezpieczenstwo`, `/szkolenia`, `/cars` z widokiem interakcji użytkownika (tap/click).
 
 ---
 
@@ -348,5 +350,6 @@ Projekt zespołowy — TPF, SEM VIII.
 - Zuzanna Kacprzak
 - Andrzej Brzeziński
 - Szymon Dral
+
 
 ---
