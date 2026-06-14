@@ -345,8 +345,8 @@ Chroniony widok dostępny po zalogowaniu — rezerwacje, vouchery, statystyki ja
 
 Projekt zespołowy — TPF, SEM VIII.
 
+- Zuzanna Kacprzak
+- Andrzej Brzeziński
+- Szymon Dral
+
 ---
-
-## Licencja
-
-Projekt akademicki — Wyższa Szkoła Informatyki i Zarządzania.
