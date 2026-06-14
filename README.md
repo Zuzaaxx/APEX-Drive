@@ -326,30 +326,12 @@ Chroniony widok dostępny po zalogowaniu — rezerwacje, vouchery, statystyki ja
 
 ---
 
-## Checklist laboratorium
-
-| Wymaganie | Status | Uwagi |
-|-----------|--------|-------|
-| Odwzorowanie prototypu | ✅ | Dark theme, sekcje zgodne z makietą APEX Drive |
-| Routing wszystkich ekranów | ✅ | SPA routing w `App.jsx`, fallback 404 |
-| Podział na `pages/` | ✅ | 18+ widoków w folderze `pages/` |
-| Komponenty reużywalne | ✅ | Navbar, Footer, CarCard, BookingCalendar… |
-| CSS / stylowanie | ✅ | Spójny dark theme, responsywność |
-| Logowanie Firebase | ✅ | E-mail, Google, rejestracja, wylogowanie |
-| Hotjar | ✅ | Contentsquare + `stateChange` przy nawigacji |
-| Google Analytics | ✅ | Firebase Analytics / GA4, event `page_view` |
-| Deploy | ✅ | https://apexdrive-b91d4.web.app |
-| Dokumentacja ze screenami | ✅ | Ten plik + folder `docs/` |
-
----
-
 ## Autorzy
 
-Projekt zespołowy — TPF, SEM VIII.
+Projekt zespołowy — Techniki Programowania Frontendowego
 
 - Zuzanna Kacprzak
 - Andrzej Brzeziński
 - Szymon Dral
-
 
 ---
