@@ -4,8 +4,8 @@ import {
     EVENT_PERIODS,
     EVENTS,
     formatEventPrice,
-    getEventBookPath,
 } from '../data/events.js'
+import { buildEventCheckoutOrder, goToCheckout } from '../lib/checkoutOrder.js'
 import Footer from '../components/Footer.jsx'
 import ChatWidget from '../components/ChatWidget.jsx'
 import './Events.css'
@@ -111,7 +111,7 @@ function EventCard({ event, onNavigate }) {
                 <button
                     type="button"
                     className={`event-card__book event-card__book--${event.variant}`}
-                    onClick={() => onNavigate?.(getEventBookPath(event))}
+                    onClick={() => goToCheckout(buildEventCheckoutOrder(event), onNavigate)}
                 >
                     REZERWUJ
                     <ChevronIcon />

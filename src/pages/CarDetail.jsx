@@ -110,7 +110,7 @@ function CarDetail({ slug, onNavigate }) {
     }
 
     const handleReserve = () => {
-        if (!pricing) return
+        if (!pricing || !onNavigate) return
 
         goToCheckoutWithAuth(
             buildCarCheckoutOrder({

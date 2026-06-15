@@ -125,26 +125,14 @@ export function formatEventPrice(value) {
     return `${value.toLocaleString('pl-PL')} PLN`
 }
 
-export function getEventBookPath(event) {
-    if (event.trackSlug === 'apex-drive') {
-        return '/track'
-    }
-    return '/account'
-}
-
 export function getHomepageEvents(limit = 3) {
     return [...EVENTS]
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .slice(0, limit)
         .map((event) => ({
-            id: event.id,
-            day: event.day,
-            month: event.month,
-            title: event.title,
-            track: event.track,
+            ...event,
             slots: `${event.spotsLeft} ${event.spotsLeft === 1 ? 'SLOT' : 'SLOTY'}`,
             status: event.spotsLeft <= 3 ? 'OSTATNIE MIEJSCA' : 'WOLNE MIEJSCA',
             urgent: event.spotsLeft <= 3,
-            bookPath: getEventBookPath(event),
         }))
 }
