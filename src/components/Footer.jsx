@@ -34,9 +34,6 @@ function Footer({ onNavigate }) {
                     <a href="/about" onClick={(e) => handleLinkClick(e, '/about')}>
                         O NAS
                     </a>
-                    <a href="/track" onClick={(e) => handleLinkClick(e, '/track')}>
-                        TOR
-                    </a>
                     <a href="/kalendarz" onClick={(e) => handleLinkClick(e, '/kalendarz')}>
                         KALENDARZ
                     </a>
