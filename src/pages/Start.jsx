@@ -175,7 +175,7 @@ function Start({ onNavigate }) {
             <section className="hero" aria-labelledby="hero-heading">
                 <div className="hero__media" aria-hidden="true">
                     <img
-                        src="/images/hero-track.jpg"
+                        src="/images/hero-track1.jpg"
                         alt=""
                         fetchPriority="high"
                         decoding="async"
@@ -422,17 +422,6 @@ function Start({ onNavigate }) {
             </section>
 
             <Footer onNavigate={onNavigate} />
-
-            <button
-                type="button"
-                className="home-back-top"
-                onClick={scrollToTop}
-                aria-label="Wróć na górę strony"
-            >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M12 19V5M6 11l6-6 6 6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-            </button>
 
             <ChatWidget />
         </div>
