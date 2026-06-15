@@ -415,7 +415,7 @@
   color: #ffffff;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
   .navbar {
     padding-right: var(--layout-gutter, 24px);
   }
@@ -443,7 +443,7 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1080px) {
   .navbar {
     padding-top: 16px;
     padding-bottom: 16px;
